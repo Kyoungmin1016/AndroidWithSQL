@@ -11,6 +11,11 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding : ActivityMainBinding //메인엑티비티와 연결
     private lateinit var loginIntent : Intent   //로그인액티비티 연결
 
+    companion object{
+        val DB_MEMBER = "DB_member.sql"
+        val DB_VERSION = 1
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
