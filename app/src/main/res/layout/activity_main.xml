@@ -7,23 +7,23 @@
     tools:context=".MainActivity">
 
     <Button
-        android:id="@+id/EmpModeButton"
+        android:id="@+id/empModeButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="관리자모드"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/UserModeButton"
+        app:layout_constraintEnd_toStartOf="@+id/userModeButton"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/UserModeButton"
+        android:id="@+id/userModeButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Button"
+        android:text="고객모드"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/EmpModeButton"
-        app:layout_constraintTop_toTopOf="@+id/EmpModeButton" />
+        app:layout_constraintStart_toEndOf="@+id/empModeButton"
+        app:layout_constraintTop_toTopOf="@+id/empModeButton" />
 </androidx.constraintlayout.widget.ConstraintLayout>

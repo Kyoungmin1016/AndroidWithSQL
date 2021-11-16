@@ -14,12 +14,12 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(R.layout.activity_main)
+        setContentView(binding.root)
 
         loginIntent = Intent(this,LoginActivity::class.java)
 
         //클릭 시 로그인화면으로 이동
-        binding.UserModeButton.setOnClickListener {
+        binding.userModeButton.setOnClickListener {
             startActivity(loginIntent)
         }
     }

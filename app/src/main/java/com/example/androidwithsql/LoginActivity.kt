@@ -10,9 +10,6 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var binding : ActivityLoginBinding //로그인뷰 연결
     private lateinit var signupIntent : Intent  //회원가입액티비티와 연결
 
-
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
