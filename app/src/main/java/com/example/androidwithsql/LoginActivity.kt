@@ -13,6 +13,7 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var binding : ActivityLoginBinding //로그인뷰 연결
     private lateinit var signupIntent : Intent  //회원가입액티비티와 연결
     private lateinit var helper: SqliteHelper   //클래스 SqliteHelper 호출
+    private lateinit var HomeIntent : Intent  //home 액티비티와 연결
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,6 +23,7 @@ class LoginActivity : AppCompatActivity() {
         setContentView(binding.root)
         signupIntent = Intent(this,SignupActivity::class.java)
         helper = SqliteHelper(this,DB_MEMBER,DB_VERSION)
+        HomeIntent = Intent(this, HomeActivity::class.java)
 
         //클릭시 회원가입화면으로 이동
         binding.signupButton.setOnClickListener {
@@ -37,7 +39,7 @@ class LoginActivity : AppCompatActivity() {
         binding.loginButton.setOnClickListener {
             if(binding.longinId.text.toString().length != 0 && binding.loginPw.text.toString().length != 0){
                 if(helper.checkMemberData(binding.longinId.text.toString(),binding.loginPw.text.toString())){
-                    Toast.makeText(this,"로그인 성공",Toast.LENGTH_SHORT).show()
+                    startActivity(HomeIntent)
                 }
                 else{
                     Toast.makeText(this,"로그인 실패",Toast.LENGTH_SHORT).show()
