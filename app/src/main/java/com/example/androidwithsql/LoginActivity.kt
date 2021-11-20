@@ -12,7 +12,8 @@ class LoginActivity : AppCompatActivity() {
 
     private lateinit var binding : ActivityLoginBinding //로그인뷰 연결
     private lateinit var signupIntent : Intent  //회원가입액티비티와 연결
-    private lateinit var helper: SqliteHelper
+    private lateinit var helper: SqliteHelper   //클래스 SqliteHelper 호출
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,19 +28,25 @@ class LoginActivity : AppCompatActivity() {
             startActivity(signupIntent)
         }
 
+        binding.resetButton.setOnClickListener {
+
+            helper.reset()
+            Toast.makeText(this,"초기화되었습니다.",Toast.LENGTH_SHORT).show()
+        }
+
         binding.loginButton.setOnClickListener {
-            if(binding.longinId.text != null && binding.loginPw.text != null){
-                if(helper.checkMemberData(binding.longinId.toString(),binding.loginPw.toString())){
+            if(binding.longinId.text.toString().length != 0 && binding.loginPw.text.toString().length != 0){
+                if(helper.checkMemberData(binding.longinId.text.toString(),binding.loginPw.text.toString())){
                     Toast.makeText(this,"로그인 성공",Toast.LENGTH_SHORT).show()
                 }
                 else{
                     Toast.makeText(this,"로그인 실패",Toast.LENGTH_SHORT).show()
+
                 }
             }
             else
                 Toast.makeText(this,"아이디 또는 비밀번호가 입력되지 않았습니다.",Toast.LENGTH_SHORT).show()
         }
-
 
 
     }

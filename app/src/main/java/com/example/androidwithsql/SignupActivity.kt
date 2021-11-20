@@ -25,13 +25,13 @@ class SignupActivity : AppCompatActivity() {
 
         //클릭 시 사용자가 입력한 정보를 Member테이블의 각 속성에 들어감.
         binding.EnrollmentButton.setOnClickListener {
-            if(binding.signupIDText.text == null || binding.signtupPWText.text == null) {
+            if(binding.signupIDText.text.toString().length == 0 || binding.signtupPWText.text.toString().length == 0) {
                 Toast.makeText(this,"아이디 또는 비밀번호가 입력되있지 않습니다.",Toast.LENGTH_SHORT).show()
             }else
             {
                 val member = MemberData(
-                    binding.signupIDText.toString(), binding.signtupPWText.toString(),
-                    binding.signupNameText.toString(), binding.signupPhoneNoText.toString()
+                    binding.signupIDText.text.toString(), binding.signtupPWText.text.toString(),
+                    binding.signupNameText.text.toString(), binding.signupPhoneNoText.text.toString()
                 )
                 helper.insertMemberData(member)
                 Toast.makeText(this, "회원등록하셨습니다.", Toast.LENGTH_SHORT).show()

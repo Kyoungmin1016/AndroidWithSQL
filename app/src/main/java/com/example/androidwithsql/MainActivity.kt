@@ -14,6 +14,9 @@ class MainActivity : AppCompatActivity() {
     companion object{
         val DB_MEMBER = "DB_member.sql"
         val DB_VERSION = 1
+        val TB_MEMBER = "TableMember"   //테이블 Member
+        val TB_GOODS = "TableGoods" //테이블 Goods
+        val LOGINLOG = "log_login"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

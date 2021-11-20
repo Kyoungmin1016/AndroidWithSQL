@@ -5,16 +5,18 @@ import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.util.Log
+import android.widget.Toast
+import com.example.androidwithsql.MainActivity.Companion.LOGINLOG
 import java.lang.reflect.Member
 
 data class MemberData(var M_id : String, var M_password: String, var name: String, var phoneNo: String)
+data class UsingMember(var M_id : String, var name: String, var time : Int)
 
 class SqliteHelper(context: Context,name: String,version:Int) : SQLiteOpenHelper(context, name, null,version) {
     override fun onCreate(db: SQLiteDatabase?) {
-
         //테이블 접근 및 생성성
         val create =
-            "create table Member('no' integer primary key autoincrement,M_id varchar(20),M_password varchar(20),name varchar(20),phoneNo varchar(11))"
+            "create table Member(M_id varchar(20) primary key,M_password varchar(20),name varchar(20),phoneNo varchar(11),time integer)"
         db?.execSQL(create)
     }
 
@@ -35,6 +37,8 @@ class SqliteHelper(context: Context,name: String,version:Int) : SQLiteOpenHelper
         values.put("M_password",member.M_password)
         values.put("name",member.name)
         values.put("phoneNo",member.phoneNo)
+        values.put("time",60)
+        Log.d("log_login","values ${values}")
 
         //db에 넣기
         wd.insert("Member",null,values)
@@ -46,20 +50,38 @@ class SqliteHelper(context: Context,name: String,version:Int) : SQLiteOpenHelper
     //데이터 확인함수
     fun checkMemberData(M_id: String, M_password: String) :  Boolean{
 
-        val select = "select * from Member where M_id = ${M_id} and M_password = ${M_password}"
-        val rd = writableDatabase
-        Log.d("log_login","select ${select}")
+        val select = "select * from Member where M_id = '${M_id}' and M_password = '${M_password}'"
+        val rd = readableDatabase
         val cursor = rd.rawQuery(select,null)
 
+        Log.d("log_login","cursor = ${cursor}, cursor.count = ${cursor.count}")
         if(cursor.count <= 0){
             cursor.close()
             rd.close()
             return false
         }
 
+        //회원정보 인텐트
+        if(cursor.moveToFirst()){
+            val UM = UsingMember(
+                cursor.getString(cursor.getColumnIndex("M_id")),
+                cursor.getString(cursor.getColumnIndex("name")),
+                cursor.getInt(cursor.getColumnIndex("time"))
+            )
+            Log.d(LOGINLOG,"UsingMember : ${UM}")
+            
+        }
         cursor.close()
         rd.close()
         return true
+    }
+
+    fun reset(){
+        val wd = writableDatabase
+        val delete = "delete from Member"
+        wd.execSQL(delete)
+
+        wd.close()
     }
 
 }
