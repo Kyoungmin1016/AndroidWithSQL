@@ -19,6 +19,7 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        //모든 연결 함수 초기화
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
         signupIntent = Intent(this,SignupActivity::class.java)
@@ -30,20 +31,22 @@ class LoginActivity : AppCompatActivity() {
             startActivity(signupIntent)
         }
 
+        //클릭 시 Member테이블의 데이터 초기화
         binding.resetButton.setOnClickListener {
-
             helper.reset()
             Toast.makeText(this,"초기화되었습니다.",Toast.LENGTH_SHORT).show()
         }
 
+        //클릭 시 로그인
         binding.loginButton.setOnClickListener {
+            //아이디 및 비밀번호정보 미 입력시 토스트메시지 출력
             if(binding.longinId.text.toString().length != 0 && binding.loginPw.text.toString().length != 0){
+                //아이디 및 비밀번호가 맞는 투플이 있으면 아이디및 기타정보 임시저장 후 Home화면으로 이동
                 if(helper.checkMemberData(binding.longinId.text.toString(),binding.loginPw.text.toString())){
                     startActivity(HomeIntent)
                 }
                 else{
                     Toast.makeText(this,"로그인 실패",Toast.LENGTH_SHORT).show()
-
                 }
             }
             else

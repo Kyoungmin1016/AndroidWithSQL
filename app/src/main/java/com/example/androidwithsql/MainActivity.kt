@@ -18,7 +18,8 @@ class MainActivity : AppCompatActivity() {
         val TB_MEMBER = "TableMember"   //테이블 Member
         val TB_GOODS = "TableGoods" //테이블 Goods
 
-        val LOGINLOG = "log_login"  //로그
+        val LOG_LOGIN = "Log_login"  //로그
+        val LOG_TIMER = "Log_timer"
     }
 
 
