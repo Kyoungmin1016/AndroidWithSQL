@@ -20,6 +20,7 @@ class MainActivity : AppCompatActivity() {
 
         val LOG_LOGIN = "Log_login"  //로그
         val LOG_TIMER = "Log_timer"
+        val LOG_FOOD = "Log_food"
     }
 
 

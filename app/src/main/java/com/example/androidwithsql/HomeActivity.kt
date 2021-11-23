@@ -16,6 +16,7 @@ import kotlin.math.roundToInt
 class HomeActivity : AppCompatActivity() {
 
     private lateinit var binding : ActivityHomeBinding
+    private lateinit var GoodsFragmentIntent : Intent
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,19 +24,15 @@ class HomeActivity : AppCompatActivity() {
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+
         binding.nameText.text = U_name
         binding.timeText.text = getTimeStringFromInt(U_time)
+        GoodsFragmentIntent = Intent(this,GoodsFragment::class.java)
+        binding.GoodsButton.setOnClickListener {
+            startActivity(GoodsFragmentIntent)
+        }
 
-//        val countDown = object : CountDownTimer(U_time.toLong()*1000, 1000) {
-//
-//            override fun onTick(millisUntilFinished: Long) {
-//                Log.d(LOG_TIMER,"")
-//            }
-//
-//            override fun onFinish() {
-//
-//            }
-//        }.start()
+
     }
     //시간을 스트링으로 변환
     private fun getTimeStringFromInt(time: Int): String {
