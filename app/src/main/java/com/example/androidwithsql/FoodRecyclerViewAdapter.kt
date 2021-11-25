@@ -1,19 +1,36 @@
 package com.example.androidwithsql
 
+import android.util.Log
+import android.util.SparseBooleanArray
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.androidwithsql.MainActivity.Companion.LOG_FOOD
 import com.example.androidwithsql.databinding.ItemGoodsBinding
 
 class FoodRecyclerViewAdapter : RecyclerView.Adapter<FoodRecyclerViewAdapter.ViewHolder>(){
 
     //리사이클러뷰에서 사용할 데이터 미리 정의 -> 나중에 GoodsFragment등에서 foodDataList에 실제 데이터 추가
     var goodsDataList = mutableListOf<GoodsData>()
+    private val checkBoxStatus = SparseBooleanArray()
 
     inner class ViewHolder(private val binding: ItemGoodsBinding) : RecyclerView.ViewHolder(binding.root){
         fun bind(foodData : GoodsData){
-            binding.goodsName.text = foodData.goodsName
-            binding.GPrice.text = foodData.G_price.toString()
+            with(binding){
+                goodsName.text = foodData.goodsName
+                GPrice.text = foodData.G_price.toString()
+
+                goodsCheckBox.isChecked = checkBoxStatus[adapterPosition]
+
+                goodsCheckBox.setOnClickListener {
+                    if(!goodsCheckBox.isChecked)
+                        checkBoxStatus.put(adapterPosition, false)
+                    else
+                        checkBoxStatus.put(adapterPosition, true)
+                    Log.d(LOG_FOOD,"adapterPosition : ${adapterPosition} isChecked : ${goodsCheckBox.isChecked}")
+                    notifyItemChanged(adapterPosition)
+                }
+            }
         }
     }
 

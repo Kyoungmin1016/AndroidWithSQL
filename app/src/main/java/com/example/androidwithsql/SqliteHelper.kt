@@ -21,7 +21,7 @@ class SqliteHelper(context: Context,name: String,version:Int) : SQLiteOpenHelper
         val CREATE_MEMBER =
             "create table Member(M_id varchar(20) primary key,M_password varchar(20),name varchar(20),phoneNo varchar(11),time integer)"
         val CREATE_GOODS =
-            "create table Goods(goodsName varchar(20) primary key,G_price integer,stock integer)"
+            "create table Goods(goodsName varchar(20) primary key,G_price integer,stock integer,foodImage blob)"
     }
 
     override fun onCreate(db: SQLiteDatabase?) {
@@ -103,6 +103,7 @@ class SqliteHelper(context: Context,name: String,version:Int) : SQLiteOpenHelper
         values.put("goodsName",goodsData.goodsName)
         values.put("G_price",goodsData.G_price)
         values.put("stock",goodsData.stock)
+        values.put("foodImage",goodsData.foodImage)
         Log.d(LOG_FOOD,"values ${values}")
 
         wd.insert("Goods",null,values)
@@ -125,8 +126,10 @@ class SqliteHelper(context: Context,name: String,version:Int) : SQLiteOpenHelper
             val goodsName =cursor.getString(cursor.getColumnIndex("goodsName"))
             val G_price =cursor.getInt(cursor.getColumnIndex("G_price"))
             val stock =cursor.getInt(cursor.getColumnIndex("stock"))
+            val foodImage : ByteArray? = cursor.getBlob(cursor.getColumnIndex("foodImage"))?: null
 
-            val tempGoodsData = GoodsData(goodsName,G_price,stock)
+
+            val tempGoodsData = GoodsData(goodsName,G_price,stock,foodImage)
             list.add(tempGoodsData)
         }
 
@@ -135,5 +138,9 @@ class SqliteHelper(context: Context,name: String,version:Int) : SQLiteOpenHelper
         rd.close()
 
         return list
+    }
+
+    fun insertOrderItem(){
+
     }
 }

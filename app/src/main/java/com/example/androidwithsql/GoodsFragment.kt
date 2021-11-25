@@ -35,13 +35,15 @@ class GoodsFragment : AppCompatActivity() {
     }
 
     private fun initGoodsData() {
-        helper.insertGoodsData(GoodsData("닭꼬치",2000,10))
-        helper.insertGoodsData(GoodsData("떡꼬치",1000,10))
-        helper.insertGoodsData(GoodsData("떡볶이",2000,10))
-        helper.insertGoodsData(GoodsData("멘보샤",4000,10))
-        helper.insertGoodsData(GoodsData("샌드위치",3000,10))
-        helper.insertGoodsData(GoodsData("치킨",7000,10))
-        helper.insertGoodsData(GoodsData("햄버거",3000,10))
+        with(helper){
+            insertGoodsData(GoodsData("닭꼬치",2000,10,null))
+            insertGoodsData(GoodsData("떡꼬치",1000,10,null))
+            insertGoodsData(GoodsData("떡볶이",2000,10,null))
+            insertGoodsData(GoodsData("멘보샤",4000,10,null))
+            insertGoodsData(GoodsData("샌드위치",3000,10,null))
+            insertGoodsData(GoodsData("치킨",7000,10,null))
+            insertGoodsData(GoodsData("햄버거",3000,10,null))
+        }
 
     }
 
