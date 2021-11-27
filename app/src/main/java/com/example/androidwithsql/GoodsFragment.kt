@@ -15,8 +15,6 @@ class GoodsFragment : AppCompatActivity() {
     private lateinit var adapter: FoodRecyclerViewAdapter   //클래스 FoodRecyclerViewAdapter 호출
     private lateinit var helper: SqliteHelper   //클래스 SqliteHelper 호출
 
-    val mDatas = mutableListOf<GoodsData>()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -28,6 +26,13 @@ class GoodsFragment : AppCompatActivity() {
         binding.initFoodButton.setOnClickListener {
             initGoodsData()
             presentGoodsRecyclerView()
+        }
+
+        binding.OrderButton.setOnClickListener {
+            for(i in 0..adapter.tempGoodsItemData.size){
+                helper.insertOrderItem(adapter.tempGoodsItemData[i])
+            }
+
         }
 
         //상품데이터 리사이클러뷰로 보여주기

@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper
 import android.util.Log
 import com.example.androidwithsql.MainActivity.Companion.LOG_FOOD
 import com.example.androidwithsql.MainActivity.Companion.LOG_LOGIN
+import com.example.androidwithsql.MainActivity.Companion.LOG_ORDER
 
 
 class SqliteHelper(context: Context,name: String,version:Int) : SQLiteOpenHelper(context, name, null,version) {
@@ -22,6 +23,8 @@ class SqliteHelper(context: Context,name: String,version:Int) : SQLiteOpenHelper
             "create table Member(M_id varchar(20) primary key,M_password varchar(20),name varchar(20),phoneNo varchar(11),time integer)"
         val CREATE_GOODS =
             "create table Goods(goodsName varchar(20) primary key,G_price integer,stock integer,foodImage blob)"
+        val CREATE_ORDERITEM =
+            "create table OrderItem('order' Integer primary key autoincrement,M_id varchar(20),goodsName varchar(20),seatNo Integer)"
     }
 
     override fun onCreate(db: SQLiteDatabase?) {
@@ -29,6 +32,7 @@ class SqliteHelper(context: Context,name: String,version:Int) : SQLiteOpenHelper
 
         db?.execSQL(CREATE_MEMBER)
         db?.execSQL(CREATE_GOODS)
+        db?.execSQL(CREATE_ORDERITEM)
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
@@ -140,7 +144,16 @@ class SqliteHelper(context: Context,name: String,version:Int) : SQLiteOpenHelper
         return list
     }
 
-    fun insertOrderItem(){
+    fun insertOrderItem(tempGoodsItem : String){
+        val wd = writableDatabase
+        val values = ContentValues()
 
+        values.put("M_id", U_id)
+        values.put("goodsName",tempGoodsItem)
+        Log.d(LOG_ORDER,"values : ${values}")
+
+        wd.insert("OrderItem",null,values)
+
+        wd.close()
     }
 }

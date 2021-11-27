@@ -1,5 +1,6 @@
 package com.example.androidwithsql
 
+import android.content.Intent
 import android.util.Log
 import android.util.SparseBooleanArray
 import android.view.LayoutInflater
@@ -13,6 +14,7 @@ class FoodRecyclerViewAdapter : RecyclerView.Adapter<FoodRecyclerViewAdapter.Vie
     //리사이클러뷰에서 사용할 데이터 미리 정의 -> 나중에 GoodsFragment등에서 foodDataList에 실제 데이터 추가
     var goodsDataList = mutableListOf<GoodsData>()
     private val checkBoxStatus = SparseBooleanArray()
+    val tempGoodsItemData = mutableListOf<String>()
 
     inner class ViewHolder(private val binding: ItemGoodsBinding) : RecyclerView.ViewHolder(binding.root){
         fun bind(foodData : GoodsData){
@@ -23,26 +25,32 @@ class FoodRecyclerViewAdapter : RecyclerView.Adapter<FoodRecyclerViewAdapter.Vie
                 goodsCheckBox.isChecked = checkBoxStatus[adapterPosition]
 
                 goodsCheckBox.setOnClickListener {
-                    if(!goodsCheckBox.isChecked)
+                    if(!goodsCheckBox.isChecked) {
                         checkBoxStatus.put(adapterPosition, false)
-                    else
+                        tempGoodsItemData.remove(binding.goodsName.text.toString())
+                    }
+                    else {
                         checkBoxStatus.put(adapterPosition, true)
+                        tempGoodsItemData.add(binding.goodsName.text.toString())
+                    }
                     Log.d(LOG_FOOD,"adapterPosition : ${adapterPosition} isChecked : ${goodsCheckBox.isChecked}")
+                    Log.d(LOG_FOOD,"tempGoodsItemData : ${tempGoodsItemData}")
                     notifyItemChanged(adapterPosition)
                 }
+
             }
         }
     }
 
     //만들어진 뷰홀더 없을 때 뷰홀더(레이아웃) 생성하는 함수
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup,viewType: Int): FoodRecyclerViewAdapter.ViewHolder {
         val binding = ItemGoodsBinding.inflate(LayoutInflater.from(parent.context),parent,false)
         return ViewHolder(binding)
     }
 
     //recyclerView가 viewholder를 가져와 데이터 연결할 때 호출
     //적절한 데이터를 가져와서 그 데이터를 사용하여 뷰홀더의 레이아웃 채움
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: FoodRecyclerViewAdapter.ViewHolder, position: Int) {
         holder.bind(goodsDataList[position])
     }
 
