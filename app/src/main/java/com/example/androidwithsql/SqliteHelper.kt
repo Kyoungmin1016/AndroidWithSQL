@@ -24,12 +24,11 @@ class SqliteHelper(context: Context,name: String,version:Int) : SQLiteOpenHelper
         val CREATE_GOODS =
             "create table Goods(goodsName varchar(20) primary key,G_price integer,stock integer,foodImage blob)"
         val CREATE_ORDERITEM =
-            "create table OrderItem('order' Integer primary key autoincrement,M_id varchar(20),goodsName varchar(20),seatNo Integer)"
+            "create table OrderItem(`order` Integer primary key autoincrement,M_id varchar(20),goodsName varchar(20),G_price integer,setNo integer)"
     }
 
     override fun onCreate(db: SQLiteDatabase?) {
         //테이블 접근 및 생성
-
         db?.execSQL(CREATE_MEMBER)
         db?.execSQL(CREATE_GOODS)
         db?.execSQL(CREATE_ORDERITEM)
@@ -144,16 +143,40 @@ class SqliteHelper(context: Context,name: String,version:Int) : SQLiteOpenHelper
         return list
     }
 
-    fun insertOrderItem(tempGoodsItem : String){
+    fun insertOrderItem(orderData : String){
         val wd = writableDatabase
         val values = ContentValues()
 
         values.put("M_id", U_id)
-        values.put("goodsName",tempGoodsItem)
+        values.put("goodsName",orderData.goodsName)
         Log.d(LOG_ORDER,"values : ${values}")
 
         wd.insert("OrderItem",null,values)
 
         wd.close()
+    }
+
+    fun presentCustemerOrder() : MutableList<OrderData>{
+        //상품 검색
+        val list = mutableListOf<OrderData>()
+        val select = "select * from OrderItem where M_id = '${U_id}'"
+        val rd = readableDatabase
+        val cursor = rd.rawQuery(select,null)
+
+        Log.d(LOG_ORDER,"cursor = ${cursor}, cursor.count = ${cursor.count}")
+
+        //상품정보 갖고오기
+        while(cursor.moveToNext()) {
+            val goodsName =cursor.getString(cursor.getColumnIndex("goodsName"))
+
+            val tempGoodsData = OrderData(goodsName)
+            list.add(tempGoodsData)
+        }
+
+        //db 닫기
+        cursor.close()
+        rd.close()
+
+        return list
     }
 }

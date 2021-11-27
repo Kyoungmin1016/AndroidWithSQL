@@ -14,7 +14,7 @@ class FoodRecyclerViewAdapter : RecyclerView.Adapter<FoodRecyclerViewAdapter.Vie
     //리사이클러뷰에서 사용할 데이터 미리 정의 -> 나중에 GoodsFragment등에서 foodDataList에 실제 데이터 추가
     var goodsDataList = mutableListOf<GoodsData>()
     private val checkBoxStatus = SparseBooleanArray()
-    val tempGoodsItemData = mutableListOf<String>()
+    val tempGoodsItemData = mutableListOf<OrderData>()
 
     inner class ViewHolder(private val binding: ItemGoodsBinding) : RecyclerView.ViewHolder(binding.root){
         fun bind(foodData : GoodsData){
@@ -27,11 +27,11 @@ class FoodRecyclerViewAdapter : RecyclerView.Adapter<FoodRecyclerViewAdapter.Vie
                 goodsCheckBox.setOnClickListener {
                     if(!goodsCheckBox.isChecked) {
                         checkBoxStatus.put(adapterPosition, false)
-                        tempGoodsItemData.remove(binding.goodsName.text.toString())
+                        tempGoodsItemData.remove(OrderData(binding.goodsName.text.toString(),))
                     }
                     else {
                         checkBoxStatus.put(adapterPosition, true)
-                        tempGoodsItemData.add(binding.goodsName.text.toString())
+                        tempGoodsItemData.add(OrderData(binding.goodsName.text.toString()))
                     }
                     Log.d(LOG_FOOD,"adapterPosition : ${adapterPosition} isChecked : ${goodsCheckBox.isChecked}")
                     Log.d(LOG_FOOD,"tempGoodsItemData : ${tempGoodsItemData}")

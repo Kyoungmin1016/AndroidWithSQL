@@ -1,11 +1,14 @@
 package com.example.androidwithsql
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.androidwithsql.MainActivity.Companion.DB_MEMBER
 import com.example.androidwithsql.MainActivity.Companion.DB_VERSION
+import com.example.androidwithsql.MainActivity.Companion.LOG_ORDER
 import com.example.androidwithsql.databinding.FragmentGoodsBinding
 import com.example.androidwithsql.databinding.ItemGoodsBinding
 
@@ -14,6 +17,7 @@ class GoodsFragment : AppCompatActivity() {
     private lateinit var binding : FragmentGoodsBinding
     private lateinit var adapter: FoodRecyclerViewAdapter   //클래스 FoodRecyclerViewAdapter 호출
     private lateinit var helper: SqliteHelper   //클래스 SqliteHelper 호출
+    private lateinit var homeIntent : Intent
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,6 +25,7 @@ class GoodsFragment : AppCompatActivity() {
         binding = FragmentGoodsBinding.inflate(layoutInflater)
         setContentView(binding.root)
         helper = SqliteHelper(this, DB_MEMBER, DB_VERSION)
+        homeIntent = Intent(this,HomeActivity::class.java)
 
         //상품초기화버튼 클릭 시
         binding.initFoodButton.setOnClickListener {
@@ -29,9 +34,11 @@ class GoodsFragment : AppCompatActivity() {
         }
 
         binding.OrderButton.setOnClickListener {
-            for(i in 0..adapter.tempGoodsItemData.size){
-                helper.insertOrderItem(adapter.tempGoodsItemData[i])
+            for(i in 0 until adapter.tempGoodsItemData.size){
+                Log.d(LOG_ORDER,"tempGoodsItemData[${i}] : ${adapter.tempGoodsItemData.get(index = i)}")
+                helper.insertOrderItem(adapter.tempGoodsItemData.get(index = i))
             }
+            startActivity(homeIntent)
 
         }
 
