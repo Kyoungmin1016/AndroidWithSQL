@@ -15,9 +15,18 @@ class OrderRecyclerViewAdapter : RecyclerView.Adapter<OrderRecyclerViewAdapter.V
 
         fun bind(orderData:OrderData){
             binding.orderText.text = orderData.goodsName
+            binding.orderNameText.text = orderData.M_id
+            binding.orderSeatText.text = orderData.seatNo.toString()
             binding.priceText.text = orderData.G_price.toString()
-            if(isEmployee(U_id.toString()))
+            if(isEmployee(U_id.toString())) {
                 binding.orderCheckBox.visibility = View.VISIBLE
+                binding.orderNameText.visibility = View.VISIBLE
+                binding.orderSeatText.visibility = View.VISIBLE
+            }else{
+                binding.orderCheckBox.visibility = View.INVISIBLE
+                binding.orderNameText.visibility = View.INVISIBLE
+                binding.orderSeatText.visibility = View.INVISIBLE
+            }
         }
     }
 

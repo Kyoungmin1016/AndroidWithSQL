@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.androidwithsql.MainActivity.Companion.DB_MEMBER
@@ -30,12 +31,27 @@ class HomeActivity : AppCompatActivity() {
         setContentView(binding.root)
         helper = SqliteHelper(this, DB_MEMBER, DB_VERSION)
         GoodsFragmentIntent = Intent(this,GoodsFragment::class.java)
+        adapter = OrderRecyclerViewAdapter() //어댑터 객체 생성
+
 
         //초기설정
         binding.nameText.text = U_name
+
+        //직원일때
+        if(adapter.isEmployee(U_id.toString())) {
+            binding.timeText.visibility = View.INVISIBLE
+            binding.summedPriceView.visibility = View.GONE
+            binding.orderCompleteButton.visibility = View.VISIBLE
+        }else{
+        //멤버일때
+            binding.timeText.visibility = View.VISIBLE
+            binding.summedPriceView.visibility = View.VISIBLE
+            binding.orderCompleteButton.visibility = View.INVISIBLE
+        }
         binding.timeText.text = getTimeStringFromInt(U_time)
         binding.summedPriceView.text = "총 가격 : ${helper.presentSummedPrice(U_id.toString())}"
 
+        //상품버튼클릭시 화면이동
         binding.GoodsButton.setOnClickListener {
             startActivity(GoodsFragmentIntent)
         }
@@ -46,7 +62,6 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun presentOrderRecyclerView() {
-        adapter = OrderRecyclerViewAdapter() //어댑터 객체 생성
         adapter.orderDataList = helper.presentCustemerOrder(U_id.toString())   //데이터 삽입
         binding.orderRecyclerView.adapter = adapter //리사이클러뷰에 어댑터 연결
         binding.orderRecyclerView.layoutManager = LinearLayoutManager(this) //레이아웃 매니저 연결
@@ -62,8 +77,6 @@ class HomeActivity : AppCompatActivity() {
     }
 
     //문자 합치기
-    private fun makeTimeString(hours: Int, minutes: Int): String =
-        String.format("%02d:%02d", hours, minutes)
-
+    private fun makeTimeString(hours: Int, minutes: Int): String = String.format("%02d:%02d", hours, minutes)
 
 }

@@ -9,6 +9,7 @@ import androidx.core.database.getIntOrNull
 import com.example.androidwithsql.MainActivity.Companion.LOG_FOOD
 import com.example.androidwithsql.MainActivity.Companion.LOG_LOGIN
 import com.example.androidwithsql.MainActivity.Companion.LOG_ORDER
+import com.example.androidwithsql.MainActivity.Companion.LOG_PRICE
 
 
 class SqliteHelper(context: Context,name: String,version:Int) : SQLiteOpenHelper(context, name, null,version) {
@@ -44,8 +45,8 @@ class SqliteHelper(context: Context,name: String,version:Int) : SQLiteOpenHelper
     fun insertMemberData(member : MemberData) {
         //db 가져오기
         val wd = writableDatabase
-
         //MemberData를 입력타입으로 변환
+
         val values = ContentValues()
         values.put("M_id",member.M_id)
         values.put("M_password",member.M_password)
@@ -144,6 +145,7 @@ class SqliteHelper(context: Context,name: String,version:Int) : SQLiteOpenHelper
         return list
     }
 
+    //주문입력
     fun insertOrderItem(M_id: String,orderData : OrderData){
         val wd = writableDatabase
         val values = ContentValues()
@@ -159,10 +161,15 @@ class SqliteHelper(context: Context,name: String,version:Int) : SQLiteOpenHelper
         wd.close()
     }
 
+    //주문 검색
     fun presentCustemerOrder(M_id: String) : MutableList<OrderData>{
-        //상품 검색
         val list = mutableListOf<OrderData>()
-        val select = "select * from OrderItem where M_id = '${M_id}'"
+        var select : String? = null
+        if(isEmployee(U_id.toString())) {
+            select = "select * from OrderItem"
+        } else {
+            select = "select * from OrderItem where M_id = '${M_id}'"
+        }
         val rd = readableDatabase
         val cursor = rd.rawQuery(select,null)
 
@@ -192,12 +199,12 @@ class SqliteHelper(context: Context,name: String,version:Int) : SQLiteOpenHelper
         val cursor = rd.rawQuery(select,null)
         var G_price = 0
 
-        Log.d("log_price","cursor = ${cursor}, cursor.count = ${cursor.count}")
+        Log.d(LOG_PRICE,"cursor = ${cursor}, cursor.count = ${cursor.count}")
 
         //상품정보 갖고오기
         if(cursor.moveToFirst()) {
             G_price = cursor.getInt(cursor.getColumnIndex("G_price"))
-            Log.d("log_price","G_price : ${G_price}")
+            Log.d(LOG_PRICE,"G_price : ${G_price}")
             return G_price
         }
 
@@ -213,15 +220,19 @@ class SqliteHelper(context: Context,name: String,version:Int) : SQLiteOpenHelper
         val rd = readableDatabase
         val cursor = rd.rawQuery(select,null)
         var summedPrice = 0
-        Log.d("log_price","cursor : ${cursor}, size : ${cursor.count}")
+        Log.d(LOG_PRICE,"cursor : ${cursor}, size : ${cursor.count}")
 
 
         while (cursor.moveToNext()){
-            Log.d("log_price","${cursor.getInt(cursor.getColumnIndex("summedPrice"))}")
+            Log.d(LOG_PRICE,"${cursor.getInt(cursor.getColumnIndex("summedPrice"))}")
             summedPrice = cursor.getInt(cursor.getColumnIndex("summedPrice"))
         }
 
         return summedPrice
+    }
+
+    fun isEmployee(Employee: String): Boolean {
+        return Employee.equals("Employee")
     }
 
 }
