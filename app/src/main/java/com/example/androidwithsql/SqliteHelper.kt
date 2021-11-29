@@ -1,5 +1,6 @@
 package com.example.androidwithsql
 
+import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
@@ -18,6 +19,7 @@ class SqliteHelper(context: Context,name: String,version:Int) : SQLiteOpenHelper
         var U_id : String? = null
         var U_name : String? = null
         var U_time : Int = 0
+        var U_seat : Int? = null
 
         //테이블생성
         val CREATE_MEMBER =
@@ -65,6 +67,7 @@ class SqliteHelper(context: Context,name: String,version:Int) : SQLiteOpenHelper
     }
 
     //멤버데이터 확인함수
+    @SuppressLint("Range")
     fun checkMemberData(M_id: String, M_password: String) :  Boolean{
 
         //아이디와 비밀번호가 맞는 투플 검색
@@ -118,6 +121,7 @@ class SqliteHelper(context: Context,name: String,version:Int) : SQLiteOpenHelper
         wd.close()
     }
 
+    @SuppressLint("Range")
     fun presentGoodsData() : MutableList<GoodsData>{
 
         //상품 검색
@@ -162,6 +166,7 @@ class SqliteHelper(context: Context,name: String,version:Int) : SQLiteOpenHelper
         wd.close()
     }
 
+    @SuppressLint("Range")
     fun presentCustemerOrder() : MutableList<OrderData>{
         //상품 검색
         val list = mutableListOf<OrderData>()
@@ -189,6 +194,7 @@ class SqliteHelper(context: Context,name: String,version:Int) : SQLiteOpenHelper
         return list
     }
 
+    @SuppressLint("Range")
     private fun selectPrice(goodsName : String) : Int{
         val select = "select G_price from Goods where goodsName = '${goodsName}'"
         val rd = readableDatabase
