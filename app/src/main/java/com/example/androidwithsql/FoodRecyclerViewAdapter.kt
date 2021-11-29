@@ -1,12 +1,13 @@
 package com.example.androidwithsql
 
-import android.content.Intent
 import android.util.Log
 import android.util.SparseBooleanArray
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.androidwithsql.MainActivity.Companion.LOG_FOOD
+import com.example.androidwithsql.MainActivity.Companion.LOG_ORDER
+import com.example.androidwithsql.SqliteHelper.Companion.U_id
 import com.example.androidwithsql.databinding.ItemGoodsBinding
 
 class FoodRecyclerViewAdapter : RecyclerView.Adapter<FoodRecyclerViewAdapter.ViewHolder>(){
@@ -27,11 +28,12 @@ class FoodRecyclerViewAdapter : RecyclerView.Adapter<FoodRecyclerViewAdapter.Vie
                 goodsCheckBox.setOnClickListener {
                     if(!goodsCheckBox.isChecked) {
                         checkBoxStatus.put(adapterPosition, false)
-                        tempGoodsItemData.remove(OrderData(binding.goodsName.text.toString(),))
+                        tempGoodsItemData.remove(OrderData(U_id.toString(),binding.goodsName.text.toString(),null,null))
                     }
                     else {
                         checkBoxStatus.put(adapterPosition, true)
-                        tempGoodsItemData.add(OrderData(binding.goodsName.text.toString()))
+                        Log.d(LOG_ORDER, "OrderData = ${OrderData(U_id.toString(),binding.goodsName.text.toString(),null,null)}")
+                        tempGoodsItemData.add(OrderData(U_id.toString(),binding.goodsName.text.toString(),null,null))
                     }
                     Log.d(LOG_FOOD,"adapterPosition : ${adapterPosition} isChecked : ${goodsCheckBox.isChecked}")
                     Log.d(LOG_FOOD,"tempGoodsItemData : ${tempGoodsItemData}")

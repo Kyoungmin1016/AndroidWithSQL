@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.widget.Toast
 import com.example.androidwithsql.MainActivity.Companion.DB_MEMBER
 import com.example.androidwithsql.MainActivity.Companion.DB_VERSION
+import com.example.androidwithsql.SqliteHelper.Companion.U_id
 import com.example.androidwithsql.databinding.ActivityLoginBinding
 
 class LoginActivity : AppCompatActivity() {
@@ -43,6 +44,7 @@ class LoginActivity : AppCompatActivity() {
             if(binding.longinId.text.toString().length != 0 && binding.loginPw.text.toString().length != 0){
                 //아이디 및 비밀번호가 맞는 투플이 있으면 아이디및 기타정보 임시저장 후 Home화면으로 이동
                 if(helper.checkMemberData(binding.longinId.text.toString(),binding.loginPw.text.toString())){
+                    //helper.insertOrderItem(OrderData(U_id.toString(),"주문 시 해당리스트에 출력됩니다.",0,null))
                     startActivity(HomeIntent)
                 }
                 else{
