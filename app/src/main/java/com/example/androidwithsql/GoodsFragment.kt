@@ -66,4 +66,5 @@ class GoodsFragment : AppCompatActivity() {
         binding.goodsRecyclerView.layoutManager = LinearLayoutManager(this) //레이아웃 매니저 연결
     }
 
+
 }
