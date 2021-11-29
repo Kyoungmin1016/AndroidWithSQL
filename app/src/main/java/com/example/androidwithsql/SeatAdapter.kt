@@ -32,6 +32,5 @@ class SeatAdapter(private val SeatList: List<Seat>) : RecyclerView.Adapter<SeatA
         val imageView: ImageView = itemView.image_view
         val textView1: TextView = itemView.text_view_1
         val textView2: TextView = itemView.text_view_2
-
     }
 }

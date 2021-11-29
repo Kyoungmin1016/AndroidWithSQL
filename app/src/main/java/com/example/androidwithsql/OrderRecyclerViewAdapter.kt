@@ -16,6 +16,7 @@ class OrderRecyclerViewAdapter : RecyclerView.Adapter<OrderRecyclerViewAdapter.V
 
         fun bind(orderData:OrderData){
             binding.orderText.text = orderData.goodsName
+            binding.priceText.text = orderData.G_price.toString()
         }
     }
 

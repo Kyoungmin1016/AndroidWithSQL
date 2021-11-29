@@ -29,10 +29,14 @@ class HomeActivity : AppCompatActivity() {
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
         helper = SqliteHelper(this, DB_MEMBER, DB_VERSION)
+        GoodsFragmentIntent = Intent(this,GoodsFragment::class.java)
 
+        //초기설정
         binding.nameText.text = U_name
         binding.timeText.text = getTimeStringFromInt(U_time)
-        GoodsFragmentIntent = Intent(this,GoodsFragment::class.java)
+        binding.summedPriceView.text =
+
+
         binding.GoodsButton.setOnClickListener {
             startActivity(GoodsFragmentIntent)
         }
