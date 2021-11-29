@@ -1,11 +1,10 @@
 package com.example.androidwithsql
 
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.androidwithsql.databinding.ItemGoodsBinding
+import com.example.androidwithsql.SqliteHelper.Companion.U_id
 import com.example.androidwithsql.databinding.ItemOrderBinding
 
 class OrderRecyclerViewAdapter : RecyclerView.Adapter<OrderRecyclerViewAdapter.ViewHolder>() {
@@ -17,6 +16,8 @@ class OrderRecyclerViewAdapter : RecyclerView.Adapter<OrderRecyclerViewAdapter.V
         fun bind(orderData:OrderData){
             binding.orderText.text = orderData.goodsName
             binding.priceText.text = orderData.G_price.toString()
+            if(isEmployee(U_id.toString()))
+                binding.orderCheckBox.visibility = View.VISIBLE
         }
     }
 
@@ -33,4 +34,7 @@ class OrderRecyclerViewAdapter : RecyclerView.Adapter<OrderRecyclerViewAdapter.V
         return orderDataList.size
     }
 
+    fun isEmployee(Employee: String): Boolean {
+        return Employee.equals("Employee")
+    }
 }

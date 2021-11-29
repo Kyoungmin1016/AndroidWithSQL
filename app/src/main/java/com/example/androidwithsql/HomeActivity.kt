@@ -34,8 +34,7 @@ class HomeActivity : AppCompatActivity() {
         //초기설정
         binding.nameText.text = U_name
         binding.timeText.text = getTimeStringFromInt(U_time)
-        binding.summedPriceView.text
-
+        binding.summedPriceView.text = "총 가격 : ${helper.presentSummedPrice(U_id.toString())}"
 
         binding.GoodsButton.setOnClickListener {
             startActivity(GoodsFragmentIntent)
@@ -48,7 +47,7 @@ class HomeActivity : AppCompatActivity() {
 
     private fun presentOrderRecyclerView() {
         adapter = OrderRecyclerViewAdapter() //어댑터 객체 생성
-        adapter.orderDataList = helper.presentCustemerOrder()   //데이터 삽입
+        adapter.orderDataList = helper.presentCustemerOrder(U_id.toString())   //데이터 삽입
         binding.orderRecyclerView.adapter = adapter //리사이클러뷰에 어댑터 연결
         binding.orderRecyclerView.layoutManager = LinearLayoutManager(this) //레이아웃 매니저 연결
     }

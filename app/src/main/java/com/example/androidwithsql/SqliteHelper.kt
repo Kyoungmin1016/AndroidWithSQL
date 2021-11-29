@@ -144,11 +144,11 @@ class SqliteHelper(context: Context,name: String,version:Int) : SQLiteOpenHelper
         return list
     }
 
-    fun insertOrderItem(orderData : OrderData){
+    fun insertOrderItem(M_id: String,orderData : OrderData){
         val wd = writableDatabase
         val values = ContentValues()
 
-        values.put("M_id", U_id)
+        values.put("M_id", M_id)
         values.put("goodsName",orderData.goodsName)
         values.put("G_price",selectPrice(orderData.goodsName))
         values.put("seatNo",1)
@@ -159,10 +159,10 @@ class SqliteHelper(context: Context,name: String,version:Int) : SQLiteOpenHelper
         wd.close()
     }
 
-    fun presentCustemerOrder() : MutableList<OrderData>{
+    fun presentCustemerOrder(M_id: String) : MutableList<OrderData>{
         //상품 검색
         val list = mutableListOf<OrderData>()
-        val select = "select * from OrderItem where M_id = '${U_id}'"
+        val select = "select * from OrderItem where M_id = '${M_id}'"
         val rd = readableDatabase
         val cursor = rd.rawQuery(select,null)
 
@@ -186,7 +186,7 @@ class SqliteHelper(context: Context,name: String,version:Int) : SQLiteOpenHelper
         return list
     }
 
-    private fun selectPrice(goodsName : String) : Int{
+    fun selectPrice(goodsName : String) : Int{
         val select = "select G_price from Goods where goodsName = '${goodsName}'"
         val rd = readableDatabase
         val cursor = rd.rawQuery(select,null)
@@ -208,16 +208,20 @@ class SqliteHelper(context: Context,name: String,version:Int) : SQLiteOpenHelper
         return G_price
     }
 
-    private fun presentSummedPrice(M_id: String) : Int{
-        val select = "select sum(G_price) from OrderItem where M_id = '${M_id}'"
+    fun presentSummedPrice(M_id: String) : Int{
+        val select = "select sum(G_price) as summedPrice from OrderItem where M_id = '${M_id}'"
         val rd = readableDatabase
         val cursor = rd.rawQuery(select,null)
         var summedPrice = 0
+        Log.d("log_price","cursor : ${cursor}, size : ${cursor.count}")
+
 
         while (cursor.moveToNext()){
-            summedPrice += cursor.getInt(cursor.getColumnIndex("G_price"))
+            Log.d("log_price","${cursor.getInt(cursor.getColumnIndex("summedPrice"))}")
+            summedPrice = cursor.getInt(cursor.getColumnIndex("summedPrice"))
         }
 
         return summedPrice
     }
+
 }

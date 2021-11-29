@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.androidwithsql.MainActivity.Companion.DB_MEMBER
 import com.example.androidwithsql.MainActivity.Companion.DB_VERSION
 import com.example.androidwithsql.MainActivity.Companion.LOG_ORDER
+import com.example.androidwithsql.SqliteHelper.Companion.U_id
 import com.example.androidwithsql.databinding.FragmentGoodsBinding
 import com.example.androidwithsql.databinding.ItemGoodsBinding
 
@@ -36,7 +37,7 @@ class GoodsFragment : AppCompatActivity() {
         binding.OrderButton.setOnClickListener {
             for(i in 0 until adapter.tempGoodsItemData.size){
                 Log.d(LOG_ORDER,"tempGoodsItemData[${i}] : ${adapter.tempGoodsItemData.get(index = i)}")
-                helper.insertOrderItem(adapter.tempGoodsItemData.get(index = i))
+                helper.insertOrderItem(U_id.toString(),adapter.tempGoodsItemData.get(index = i))
             }
             startActivity(homeIntent)
 
