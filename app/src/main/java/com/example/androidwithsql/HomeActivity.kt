@@ -34,7 +34,7 @@ class HomeActivity : AppCompatActivity() {
         //초기설정
         binding.nameText.text = U_name
         binding.timeText.text = getTimeStringFromInt(U_time)
-        binding.summedPriceView.text =
+        binding.summedPriceView.text
 
 
         binding.GoodsButton.setOnClickListener {

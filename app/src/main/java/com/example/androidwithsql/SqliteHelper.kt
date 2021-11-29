@@ -190,7 +190,7 @@ class SqliteHelper(context: Context,name: String,version:Int) : SQLiteOpenHelper
         val select = "select G_price from Goods where goodsName = '${goodsName}'"
         val rd = readableDatabase
         val cursor = rd.rawQuery(select,null)
-        var G_price : Int = 1
+        var G_price = 0
 
         Log.d("log_price","cursor = ${cursor}, cursor.count = ${cursor.count}")
 
@@ -206,5 +206,18 @@ class SqliteHelper(context: Context,name: String,version:Int) : SQLiteOpenHelper
         rd.close()
 
         return G_price
+    }
+
+    private fun presentSummedPrice(M_id: String) : Int{
+        val select = "select sum(G_price) from OrderItem where M_id = '${M_id}'"
+        val rd = readableDatabase
+        val cursor = rd.rawQuery(select,null)
+        var summedPrice = 0
+
+        while (cursor.moveToNext()){
+            summedPrice += cursor.getInt(cursor.getColumnIndex("G_price"))
+        }
+
+        return summedPrice
     }
 }
