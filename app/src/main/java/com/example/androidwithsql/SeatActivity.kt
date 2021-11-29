@@ -26,7 +26,7 @@ class SeatActivity : AppCompatActivity() {
         for (i in 1 until size+1){
             val drawable = R.drawable.ic_computer
 
-            val item = Seat(drawable, "좌석번호 $i", "사용여부")
+            val item = Seat(drawable, i, "사용여부")
             list += item
         }
         return list

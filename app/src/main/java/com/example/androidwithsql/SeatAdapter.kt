@@ -9,7 +9,8 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item.view.*
 
-class SeatAdapter(private val SeatList: List<Seat>) : RecyclerView.Adapter<SeatAdapter.SeatViewHolder>() {
+class SeatAdapter(private val SeatList: List<Seat>) :
+    RecyclerView.Adapter<SeatAdapter.SeatViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SeatViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item,
@@ -22,8 +23,8 @@ class SeatAdapter(private val SeatList: List<Seat>) : RecyclerView.Adapter<SeatA
         val currentItem = SeatList[position]
 
         holder.imageView.setImageResource(currentItem.imageResource)
-        holder.textView1.text = currentItem.text1
-        holder.textView2.text = currentItem.text2
+        holder.textView1.text = currentItem.seatNo.toString()
+        holder.textView2.text = currentItem.M_id
     }
 
     override fun getItemCount() = SeatList.size

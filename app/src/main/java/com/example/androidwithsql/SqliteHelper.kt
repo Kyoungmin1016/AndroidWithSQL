@@ -26,6 +26,8 @@ class SqliteHelper(context: Context,name: String,version:Int) : SQLiteOpenHelper
             "create table Goods(goodsName varchar(20) primary key,G_price integer,stock integer,foodImage blob)"
         val CREATE_ORDERITEM =
             "create table OrderItem(`order` Integer primary key autoincrement,M_id varchar(20),goodsName varchar(20),G_price integer,seatNo integer)"
+        val CREATE_SEAT =
+            "create table Seat(seatNo Integer primary key, M_id varchar(20))"
     }
 
     override fun onCreate(db: SQLiteDatabase?) {
@@ -33,6 +35,7 @@ class SqliteHelper(context: Context,name: String,version:Int) : SQLiteOpenHelper
         db?.execSQL(CREATE_MEMBER)
         db?.execSQL(CREATE_GOODS)
         db?.execSQL(CREATE_ORDERITEM)
+        db?.execSQL(CREATE_SEAT)
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
