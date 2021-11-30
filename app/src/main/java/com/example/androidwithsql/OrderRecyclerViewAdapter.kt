@@ -42,11 +42,11 @@ class OrderRecyclerViewAdapter : RecyclerView.Adapter<OrderRecyclerViewAdapter.V
                 orderCheckBox.setOnClickListener {
                     if(!orderCheckBox.isChecked) {
                         checkBoxStatus.put(adapterPosition, false)
-                        tempOrderItemData.remove(OrderData(null,orderNameText.text.toString(),orderText.text.toString(),null,null))
+                        tempOrderItemData.remove(OrderData(orderDataList[position].orderNo,orderDataList[position].goodsName,orderDataList[position].M_id,null,null))
                     }
                     else {
                         checkBoxStatus.put(adapterPosition, true)
-                        tempOrderItemData.add(OrderData(null,orderNameText.text.toString(),orderText.text.toString(),null,null))
+                        tempOrderItemData.add(OrderData(orderDataList[position].orderNo,orderDataList[position].goodsName,orderDataList[position].M_id,null,null))
                     }
                     Log.d(LOG_EMPLOYEE,"adapterPosition : ${adapterPosition} isChecked : ${orderCheckBox.isChecked}")
                     Log.d(LOG_EMPLOYEE,"tempOrderItemData : ${tempOrderItemData}")

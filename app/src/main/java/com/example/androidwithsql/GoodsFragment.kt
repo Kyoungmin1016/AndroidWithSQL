@@ -28,16 +28,12 @@ class GoodsFragment : AppCompatActivity() {
         helper = SqliteHelper(this, DB_MEMBER, DB_VERSION)
         homeIntent = Intent(this,HomeActivity::class.java)
 
-        //상품초기화버튼 클릭 시
-        binding.initFoodButton.setOnClickListener {
-            initGoodsData()
-            presentGoodsRecyclerView()
-        }
+        initGoodsData()
 
         binding.OrderButton.setOnClickListener {
             for(i in 0 until adapter.tempGoodsItemData.size){
                 Log.d(LOG_ORDER,"tempGoodsItemData[${i}] : ${adapter.tempGoodsItemData.get(index = i)}")
-                helper.insertOrderItem(U_id.toString(),adapter.tempGoodsItemData.get(index = i))
+                helper.insertOrderItem(adapter.tempGoodsItemData.get(index = i))
             }
             startActivity(homeIntent)
 
