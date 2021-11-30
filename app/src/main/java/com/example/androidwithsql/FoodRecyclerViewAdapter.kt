@@ -28,12 +28,11 @@ class FoodRecyclerViewAdapter : RecyclerView.Adapter<FoodRecyclerViewAdapter.Vie
                 goodsCheckBox.setOnClickListener {
                     if(!goodsCheckBox.isChecked) {
                         checkBoxStatus.put(adapterPosition, false)
-                        tempGoodsItemData.remove(OrderData(U_id.toString(),binding.goodsName.text.toString(),null,null))
+                        tempGoodsItemData.remove(OrderData(null,U_id.toString(),goodsDataList[position].goodsName,goodsDataList[position].G_price,null))
                     }
                     else {
                         checkBoxStatus.put(adapterPosition, true)
-                        Log.d(LOG_ORDER, "OrderData = ${OrderData(U_id.toString(),binding.goodsName.text.toString(),null,null)}")
-                        tempGoodsItemData.add(OrderData(U_id.toString(),binding.goodsName.text.toString(),null,null))
+                        tempGoodsItemData.add(OrderData(null,U_id.toString(),goodsDataList[position].goodsName,goodsDataList[position].G_price,null))
                     }
                     Log.d(LOG_FOOD,"adapterPosition : ${adapterPosition} isChecked : ${goodsCheckBox.isChecked}")
                     Log.d(LOG_FOOD,"tempGoodsItemData : ${tempGoodsItemData}")

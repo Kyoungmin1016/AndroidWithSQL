@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.androidwithsql.MainActivity.Companion.DB_MEMBER
 import com.example.androidwithsql.MainActivity.Companion.DB_VERSION
 import com.example.androidwithsql.MainActivity.Companion.LOG_ORDER
+import com.example.androidwithsql.SqliteHelper.Companion.U_id
 import com.example.androidwithsql.databinding.FragmentGoodsBinding
 import com.example.androidwithsql.databinding.ItemGoodsBinding
 
@@ -27,11 +28,7 @@ class GoodsFragment : AppCompatActivity() {
         helper = SqliteHelper(this, DB_MEMBER, DB_VERSION)
         homeIntent = Intent(this,HomeActivity::class.java)
 
-        //상품초기화버튼 클릭 시
-        binding.initFoodButton.setOnClickListener {
-            initGoodsData()
-            presentGoodsRecyclerView()
-        }
+        initGoodsData()
 
         binding.OrderButton.setOnClickListener {
             for(i in 0 until adapter.tempGoodsItemData.size){

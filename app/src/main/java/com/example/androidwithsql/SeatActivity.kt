@@ -31,8 +31,6 @@ class SeatActivity : AppCompatActivity() {
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
         binding.recyclerView.setHasFixedSize(true)
-
-
     }
 
     private fun generateDummyList(size: Int): MutableList<Seat> {

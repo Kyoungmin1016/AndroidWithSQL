@@ -10,6 +10,8 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding : ActivityMainBinding //메인엑티비티와 연결
     private lateinit var loginIntent : Intent   //로그인액티비티 연결
+    private lateinit var homeIntent : Intent
+    private lateinit var helper: SqliteHelper
 
     companion object{
         val DB_MEMBER = "DB_member.sql" //SQL 이름
@@ -22,6 +24,8 @@ class MainActivity : AppCompatActivity() {
         val LOG_TIMER = "Log_timer"
         val LOG_FOOD = "Log_food"
         val LOG_ORDER = "Log_order"
+        val LOG_PRICE = "Log_price"
+        val LOG_EMPLOYEE = "Log_employee"
     }
 
 
@@ -31,11 +35,19 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        helper = SqliteHelper(this, DB_MEMBER, DB_VERSION)
         loginIntent = Intent(this,LoginActivity::class.java)
+        homeIntent = Intent(this,HomeActivity::class.java)
 
         //클릭 시 로그인화면으로 이동
         binding.userModeButton.setOnClickListener {
             startActivity(loginIntent)
+        }
+
+        binding.empModeButton.setOnClickListener {
+            helper.insertMemberData(MemberData("Employee","Employee","직원",null))
+            helper.checkMemberData("Employee","Employee")
+            startActivity(homeIntent)
         }
     }
 }

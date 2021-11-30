@@ -10,6 +10,7 @@ import androidx.core.database.getIntOrNull
 import com.example.androidwithsql.MainActivity.Companion.LOG_FOOD
 import com.example.androidwithsql.MainActivity.Companion.LOG_LOGIN
 import com.example.androidwithsql.MainActivity.Companion.LOG_ORDER
+import com.example.androidwithsql.MainActivity.Companion.LOG_PRICE
 
 
 class SqliteHelper(context: Context,name: String,version:Int) : SQLiteOpenHelper(context, name, null,version) {
@@ -26,8 +27,7 @@ class SqliteHelper(context: Context,name: String,version:Int) : SQLiteOpenHelper
             "create table Member(M_id varchar(20) primary key,M_password varchar(20),name varchar(20),phoneNo varchar(11),time integer)"
         val CREATE_GOODS =
             "create table Goods(goodsName varchar(20) primary key,G_price integer,stock integer,foodImage blob)"
-        val CREATE_ORDERITEM =
-            "create table OrderItem(`order` Integer primary key autoincrement,M_id varchar(20),goodsName varchar(20),G_price integer,seatNo integer)"
+        val CREATE_ORDERITEM = "create table OrderItem(orderNo Integer primary key autoincrement,M_id varchar(20),goodsName varchar(20),G_price integer,seatNo integer)"
         val CREATE_SEAT =
             "create table Seat(seatNo Integer primary key, M_id varchar(20))"
     }
@@ -49,8 +49,8 @@ class SqliteHelper(context: Context,name: String,version:Int) : SQLiteOpenHelper
     fun insertMemberData(member : MemberData) {
         //db 가져오기
         val wd = writableDatabase
-
         //MemberData를 입력타입으로 변환
+
         val values = ContentValues()
         values.put("M_id",member.M_id)
         values.put("M_password",member.M_password)
@@ -120,8 +120,7 @@ class SqliteHelper(context: Context,name: String,version:Int) : SQLiteOpenHelper
 
         wd.close()
     }
-
-    @SuppressLint("Range")
+    
     fun presentGoodsData() : MutableList<GoodsData>{
 
         //상품 검색
@@ -139,7 +138,6 @@ class SqliteHelper(context: Context,name: String,version:Int) : SQLiteOpenHelper
             val stock =cursor.getInt(cursor.getColumnIndex("stock"))
             val foodImage : ByteArray? = cursor.getBlob(cursor.getColumnIndex("foodImage"))?: null
 
-
             val tempGoodsData = GoodsData(goodsName,G_price,stock,foodImage)
             list.add(tempGoodsData)
         }
@@ -151,13 +149,14 @@ class SqliteHelper(context: Context,name: String,version:Int) : SQLiteOpenHelper
         return list
     }
 
+    //주문입력
     fun insertOrderItem(orderData : OrderData){
         val wd = writableDatabase
         val values = ContentValues()
 
-        values.put("M_id", U_id)
+        values.put("M_id", orderData.M_id)
         values.put("goodsName",orderData.goodsName)
-        values.put("G_price",selectPrice(orderData.goodsName))
+        values.put("G_price",orderData.G_price)
         values.put("seatNo",1)
         Log.d(LOG_ORDER,"values : ${values}")
 
@@ -166,11 +165,15 @@ class SqliteHelper(context: Context,name: String,version:Int) : SQLiteOpenHelper
         wd.close()
     }
 
-    @SuppressLint("Range")
-    fun presentCustemerOrder() : MutableList<OrderData>{
-        //상품 검색
+    //주문 검색
+    fun presentCustemerOrder(M_id: String) : MutableList<OrderData>{
         val list = mutableListOf<OrderData>()
-        val select = "select * from OrderItem where M_id = '${U_id}'"
+        var select : String? = null
+        if(isEmployee(U_id.toString())) {
+            select = "select * from OrderItem"
+        } else {
+            select = "select * from OrderItem where M_id = '${M_id}'"
+        }
         val rd = readableDatabase
         val cursor = rd.rawQuery(select,null)
 
@@ -178,12 +181,13 @@ class SqliteHelper(context: Context,name: String,version:Int) : SQLiteOpenHelper
 
         //상품정보 갖고오기
         while(cursor.moveToNext()) {
+            val orderNo = cursor.getInt(cursor.getColumnIndex("orderNo"))
             val M_id = cursor.getString(cursor.getColumnIndex("M_id"))
             val goodsName =cursor.getString(cursor.getColumnIndex("goodsName"))
             val G_price = cursor.getInt(cursor.getColumnIndex("G_price"))
             val seatNo = cursor.getInt(cursor.getColumnIndex("seatNo"))
 
-            val tempGoodsData = OrderData(M_id,goodsName,G_price,seatNo)
+            val tempGoodsData = OrderData(orderNo,M_id,goodsName,G_price,seatNo)
             list.add(tempGoodsData)
         }
 
@@ -194,26 +198,32 @@ class SqliteHelper(context: Context,name: String,version:Int) : SQLiteOpenHelper
         return list
     }
 
-    @SuppressLint("Range")
-    private fun selectPrice(goodsName : String) : Int{
-        val select = "select G_price from Goods where goodsName = '${goodsName}'"
+    fun presentSummedPrice(M_id: String) : Int{
+        val select = "select sum(G_price) as summedPrice from OrderItem where M_id = '${M_id}'"
         val rd = readableDatabase
         val cursor = rd.rawQuery(select,null)
-        var G_price : Int = 1
+        var summedPrice = 0
+        Log.d(LOG_PRICE,"cursor : ${cursor}, size : ${cursor.count}")
 
-        Log.d("log_price","cursor = ${cursor}, cursor.count = ${cursor.count}")
 
-        //상품정보 갖고오기
-        if(cursor.moveToFirst()) {
-            G_price = cursor.getInt(cursor.getColumnIndex("G_price"))
-            Log.d("log_price","G_price : ${G_price}")
-            return G_price
+        while (cursor.moveToNext()){
+            Log.d(LOG_PRICE,"${cursor.getInt(cursor.getColumnIndex("summedPrice"))}")
+            summedPrice = cursor.getInt(cursor.getColumnIndex("summedPrice"))
         }
 
-        //db 닫기
-        cursor.close()
-        rd.close()
-
-        return G_price
+        return summedPrice
     }
+
+    fun isEmployee(Employee: String): Boolean {
+        return Employee.equals("Employee")
+    }
+
+    fun completeOrder(orderData: OrderData){
+        val wd = writableDatabase
+
+        Log.d(LOG_ORDER,"order : ${orderData.goodsName}")
+        wd.delete("OrderItem","orderNo = ${orderData.orderNo}",null)
+        wd.close()
+    }
+
 }
