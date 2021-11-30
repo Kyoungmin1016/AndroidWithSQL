@@ -14,7 +14,7 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var binding : ActivityLoginBinding //로그인뷰 연결
     private lateinit var signupIntent : Intent  //회원가입액티비티와 연결
     private lateinit var helper: SqliteHelper   //클래스 SqliteHelper 호출
-    private lateinit var SeatIntent : Intent  //home 액티비티와 연결
+    private lateinit var SeatIntent : Intent  //seat 액티비티와 연결
 
 
     override fun onCreate(savedInstanceState: Bundle?) {

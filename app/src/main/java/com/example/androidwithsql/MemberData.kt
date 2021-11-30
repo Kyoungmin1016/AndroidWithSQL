@@ -1,7 +1,7 @@
 package com.example.androidwithsql
 
 
-data class Seat( val imageResource: Int, val seatNo: Int, var M_id: String)
+data class SeatData( val imageResource: Int, val seatNo: Int, var M_id: String)
 
 data class MemberData(val M_id : String, val M_password: String, val name: String, val phoneNo: String?)
 
