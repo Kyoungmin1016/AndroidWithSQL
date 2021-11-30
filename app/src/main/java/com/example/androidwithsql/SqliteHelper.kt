@@ -1,5 +1,6 @@
 package com.example.androidwithsql
 
+import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
@@ -19,14 +20,16 @@ class SqliteHelper(context: Context,name: String,version:Int) : SQLiteOpenHelper
         var U_id : String? = null
         var U_name : String? = null
         var U_time : Int = 0
+        var U_seat : Int? = null
 
         //테이블생성
         val CREATE_MEMBER =
             "create table Member(M_id varchar(20) primary key,M_password varchar(20),name varchar(20),phoneNo varchar(11),time integer)"
         val CREATE_GOODS =
             "create table Goods(goodsName varchar(20) primary key,G_price integer,stock integer,foodImage blob)"
-        val CREATE_ORDERITEM =
-            "create table OrderItem(orderNo Integer primary key autoincrement,M_id varchar(20),goodsName varchar(20),G_price integer,seatNo integer)"
+        val CREATE_ORDERITEM = "create table OrderItem(orderNo Integer primary key autoincrement,M_id varchar(20),goodsName varchar(20),G_price integer,seatNo integer)"
+        val CREATE_SEAT =
+            "create table Seat(seatNo Integer primary key, M_id varchar(20))"
     }
 
     override fun onCreate(db: SQLiteDatabase?) {
@@ -34,6 +37,7 @@ class SqliteHelper(context: Context,name: String,version:Int) : SQLiteOpenHelper
         db?.execSQL(CREATE_MEMBER)
         db?.execSQL(CREATE_GOODS)
         db?.execSQL(CREATE_ORDERITEM)
+        db?.execSQL(CREATE_SEAT)
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
@@ -63,6 +67,7 @@ class SqliteHelper(context: Context,name: String,version:Int) : SQLiteOpenHelper
     }
 
     //멤버데이터 확인함수
+    @SuppressLint("Range")
     fun checkMemberData(M_id: String, M_password: String) :  Boolean{
 
         //아이디와 비밀번호가 맞는 투플 검색
@@ -115,7 +120,7 @@ class SqliteHelper(context: Context,name: String,version:Int) : SQLiteOpenHelper
 
         wd.close()
     }
-
+    
     fun presentGoodsData() : MutableList<GoodsData>{
 
         //상품 검색
