@@ -37,28 +37,32 @@ class HomeActivity : AppCompatActivity() {
         //초기설정
         binding.nameText.text = U_name
 
-        //직원일때
-        if(adapter.isEmployee(U_id.toString())) {
-            binding.timeText.visibility = View.INVISIBLE
-            binding.summedPriceView.visibility = View.GONE
-            binding.orderCompleteButton.visibility = View.VISIBLE
-        }else{
-        //멤버일때
-            binding.timeText.visibility = View.VISIBLE
-            binding.summedPriceView.visibility = View.VISIBLE
-            binding.orderCompleteButton.visibility = View.INVISIBLE
-        }
-        binding.timeText.text = getTimeStringFromInt(U_time)
-        binding.summedPriceView.text = "총 가격 : ${helper.presentSummedPrice(U_id.toString())}"
+        with(binding){
+            //직원일때
+            if(adapter.isEmployee(U_id.toString())) {
+                timeText.visibility = View.INVISIBLE
+                summedPriceView.visibility = View.GONE
+                orderCompleteButton.visibility = View.VISIBLE
+            }else{
+                //멤버일때
+                timeText.visibility = View.VISIBLE
+                summedPriceView.visibility = View.VISIBLE
+                orderCompleteButton.visibility = View.INVISIBLE
+            }
+            timeText.text = getTimeStringFromInt(U_time)
+//            summedPriceView.text = "총 가격 : ${helper.presentSummedPrice(U_id.toString())}"
 
-        //상품버튼클릭시 화면이동
-        binding.GoodsButton.setOnClickListener {
-            startActivity(GoodsFragmentIntent)
-        }
+            //상품버튼클릭시 화면이동
+            GoodsButton.setOnClickListener {
+                startActivity(GoodsFragmentIntent)
+            }
 
+            //주문완료버튼 클릭시 주문투플 삭제
+            orderCompleteButton.setOnClickListener {
+
+            }
+        }
         presentOrderRecyclerView()
-
-
     }
 
     private fun presentOrderRecyclerView() {
