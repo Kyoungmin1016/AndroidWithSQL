@@ -9,4 +9,6 @@ data class GoodsData(val goodsName:String,val G_price : Int,val stock : Int, val
 
 data class OrderData(val orderNo : Int?,val M_id:String, val goodsName:String, val G_price: Int?, val seatNo:Int?)
 
+data class TimeData(val time: Int, val T_price: Int)
+
 //data class OrderData(val goodsName : String)

@@ -10,6 +10,7 @@ import androidx.core.database.getIntOrNull
 import com.example.androidwithsql.MainActivity.Companion.LOG_FOOD
 import com.example.androidwithsql.MainActivity.Companion.LOG_LOGIN
 import com.example.androidwithsql.MainActivity.Companion.LOG_ORDER
+import com.example.androidwithsql.MainActivity.Companion.LOG_TIMER
 import com.example.androidwithsql.MainActivity.Companion.LOG_PRICE
 
 
@@ -29,7 +30,9 @@ class SqliteHelper(context: Context,name: String,version:Int) : SQLiteOpenHelper
             "create table Goods(goodsName varchar(20) primary key,G_price integer,stock integer,foodImage blob)"
         val CREATE_ORDERITEM = "create table OrderItem(orderNo Integer primary key autoincrement,M_id varchar(20),goodsName varchar(20),G_price integer,seatNo integer)"
         val CREATE_SEAT =
-            "create table Seat(seatNo Integer primary key, M_id varchar(20))"
+            "create table Seat(seatNo Integer primary key autoincrement, M_id varchar(20))"
+        val CREATE_TIME =
+            "create table Time(time integer, T_price integer)"
     }
 
     override fun onCreate(db: SQLiteDatabase?) {
@@ -38,6 +41,7 @@ class SqliteHelper(context: Context,name: String,version:Int) : SQLiteOpenHelper
         db?.execSQL(CREATE_GOODS)
         db?.execSQL(CREATE_ORDERITEM)
         db?.execSQL(CREATE_SEAT)
+        db?.execSQL(CREATE_TIME)
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
@@ -56,7 +60,7 @@ class SqliteHelper(context: Context,name: String,version:Int) : SQLiteOpenHelper
         values.put("M_password",member.M_password)
         values.put("name",member.name)
         values.put("phoneNo",member.phoneNo)
-        values.put("time",60)
+        values.put("time",0)
         Log.d(LOG_LOGIN,"values ${values}")
 
         //db에 넣기
@@ -121,6 +125,7 @@ class SqliteHelper(context: Context,name: String,version:Int) : SQLiteOpenHelper
         wd.close()
     }
     
+    @SuppressLint("Range")
     fun presentGoodsData() : MutableList<GoodsData>{
 
         //상품 검색
@@ -166,6 +171,7 @@ class SqliteHelper(context: Context,name: String,version:Int) : SQLiteOpenHelper
     }
 
     //주문 검색
+    @SuppressLint("Range")
     fun presentCustemerOrder(M_id: String) : MutableList<OrderData>{
         val list = mutableListOf<OrderData>()
         var select : String? = null
@@ -198,6 +204,7 @@ class SqliteHelper(context: Context,name: String,version:Int) : SQLiteOpenHelper
         return list
     }
 
+    @SuppressLint("Range")
     fun presentSummedPrice(M_id: String) : Int{
         val select = "select sum(G_price) as summedPrice from OrderItem where M_id = '${M_id}'"
         val rd = readableDatabase
@@ -224,6 +231,19 @@ class SqliteHelper(context: Context,name: String,version:Int) : SQLiteOpenHelper
         Log.d(LOG_ORDER,"order : ${orderData.goodsName}")
         wd.delete("OrderItem","orderNo = ${orderData.orderNo}",null)
         wd.close()
+    }
+
+    fun updateTime(timeData : TimeData){
+        val wd = writableDatabase
+        val values = ContentValues()
+
+        values.put("time", timeData.time + U_time)
+        Log.d(LOG_TIMER,"values : ${values}")
+
+        wd.update("Member",values,"M_id = '${U_id}'",null)
+
+        wd.close()
+
     }
 
 }
