@@ -19,29 +19,32 @@ class SqliteHelper(context: Context,name: String,version:Int) : SQLiteOpenHelper
     companion object{
         //로그인 시 회원 아이디 및 이름,시간 임시저장
         var U_id : String? = null
-        var U_name : String? = null
-        var U_time : Int = 0
-        var U_seat : Int? = null
 
         //테이블생성
         val CREATE_MEMBER =
             "create table Member(M_id varchar(20) primary key,M_password varchar(20),name varchar(20),phoneNo varchar(11),time integer)"
         val CREATE_GOODS =
             "create table Goods(goodsName varchar(20) primary key,G_price integer,stock integer,foodImage blob)"
-        val CREATE_ORDERITEM = "create table OrderItem(orderNo Integer primary key autoincrement,M_id varchar(20),goodsName varchar(20),G_price integer,seatNo integer)"
+        val CREATE_ORDERITEM =
+            "create table OrderItem(orderNo Integer primary key autoincrement,M_id varchar(20),goodsName varchar(20),G_price integer,seatNo integer)"
         val CREATE_SEAT =
             "create table Seat(seatNo Integer primary key autoincrement, M_id varchar(20))"
         val CREATE_TIME =
-            "create table Time(time integer, T_price integer)"
+            "create table Time(time integer primary key, T_price integer)"
+        val CREATE_SALES =
+            "create table Sales(salesNo Integer primary key autoincrement, M_id varchar(20),goodsName varchar(20),time integer,foreign key(goodsName) references Goods(goodsName),foreign key(time) references Time(time))"
     }
 
     override fun onCreate(db: SQLiteDatabase?) {
+
+        db?.execSQL("PRAGMA foreign_keys = true")
         //테이블 접근 및 생성
         db?.execSQL(CREATE_MEMBER)
         db?.execSQL(CREATE_GOODS)
         db?.execSQL(CREATE_ORDERITEM)
         db?.execSQL(CREATE_SEAT)
         db?.execSQL(CREATE_TIME)
+        db?.execSQL(CREATE_SALES)
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
@@ -60,7 +63,7 @@ class SqliteHelper(context: Context,name: String,version:Int) : SQLiteOpenHelper
         values.put("M_password",member.M_password)
         values.put("name",member.name)
         values.put("phoneNo",member.phoneNo)
-        values.put("time",0)
+        values.put("time",member.time)
         Log.d(LOG_LOGIN,"values ${values}")
 
         //db에 넣기
@@ -89,8 +92,6 @@ class SqliteHelper(context: Context,name: String,version:Int) : SQLiteOpenHelper
         //회원정보 임시저장
         if(cursor.moveToFirst()){
             U_id = cursor.getString(cursor.getColumnIndex("M_id"))
-            U_name = cursor.getString(cursor.getColumnIndex("name"))
-            U_time = cursor.getInt(cursor.getColumnIndex("time"))
         }
 
         //db 닫기
@@ -233,13 +234,38 @@ class SqliteHelper(context: Context,name: String,version:Int) : SQLiteOpenHelper
         val wd = writableDatabase
         val values = ContentValues()
 
-        values.put("time", timeData.time + U_time)
+        val time: Int = getMemberData(U_id.toString()).time + timeData.time
+
+        values.put("time", time)
         Log.d(LOG_TIMER,"values : ${values}")
 
-        wd.update("Member",values,"M_id = '${U_id}'",null)
+        wd.update("Member",values,"M_id = '${U_id.toString()}'",null)
 
         wd.close()
 
+    }
+
+    fun getMemberData(M_id: String) : MemberData{
+        val rd = readableDatabase
+        val select = "select * from Member where M_id = '${M_id}'"
+        val cursor = rd.rawQuery(select,null)
+        var memberData : MemberData? = null
+
+        Log.d("Log_member","cursor : ${cursor}, size : ${cursor.count}")
+
+        if(cursor.moveToFirst()){
+            val M_id = cursor.getString(cursor.getColumnIndex("M_id"))
+            val M_password = cursor.getString(cursor.getColumnIndex("M_password"))
+            val name = cursor.getString(cursor.getColumnIndex("name"))
+            val phoneNo = cursor.getString(cursor.getColumnIndex("phoneNo"))
+            val time = cursor.getInt(cursor.getColumnIndex("time"))
+
+            memberData = MemberData(M_id,M_password,name,phoneNo,time)
+        }
+
+        cursor.close()
+        rd.close()
+        return memberData!!
     }
 
 }

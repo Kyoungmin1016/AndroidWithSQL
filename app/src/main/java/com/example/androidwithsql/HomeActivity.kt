@@ -13,8 +13,6 @@ import com.example.androidwithsql.MainActivity.Companion.DB_VERSION
 import com.example.androidwithsql.MainActivity.Companion.LOG_ORDER
 import com.example.androidwithsql.MainActivity.Companion.LOG_TIMER
 import com.example.androidwithsql.SqliteHelper.Companion.U_id
-import com.example.androidwithsql.SqliteHelper.Companion.U_name
-import com.example.androidwithsql.SqliteHelper.Companion.U_time
 import com.example.androidwithsql.databinding.ActivityHomeBinding
 import kotlin.math.roundToInt
 
@@ -24,6 +22,7 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var GoodsFragmentIntent : Intent
     private lateinit var helper: SqliteHelper
     private lateinit var adapter: OrderRecyclerViewAdapter   //클래스 FoodRecyclerViewAdapter 호출
+    private lateinit var memberData: MemberData
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,9 +33,10 @@ class HomeActivity : AppCompatActivity() {
         GoodsFragmentIntent = Intent(this,GoodsFragment::class.java)
         adapter = OrderRecyclerViewAdapter() //어댑터 객체 생성
 
+        memberData = helper.getMemberData(U_id.toString())
 
         //초기설정
-        binding.nameText.text = U_name
+        binding.nameText.text = memberData.name
 
         with(binding){
             //직원일때
@@ -50,7 +50,7 @@ class HomeActivity : AppCompatActivity() {
                 summedPriceView.visibility = View.VISIBLE
                 orderCompleteButton.visibility = View.INVISIBLE
             }
-            timeText.text = getTimeStringFromInt(U_time)
+            timeText.text = getTimeStringFromInt(memberData.time)
             summedPriceView.text = "총 가격 : ${helper.presentSummedPrice(U_id.toString())}"
 
             //상품버튼클릭시 화면이동

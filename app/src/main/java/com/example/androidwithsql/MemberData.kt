@@ -3,7 +3,7 @@ package com.example.androidwithsql
 
 data class SeatData( val imageResource: Int, val seatNo: Int, var M_id: String)
 
-data class MemberData(val M_id : String, val M_password: String, val name: String, val phoneNo: String?)
+data class MemberData(val M_id : String, val M_password: String, val name: String, val phoneNo: String?, val time : Int)
 
 data class GoodsData(val goodsName:String,val G_price : Int,val stock : Int, val foodImage : ByteArray?)
 

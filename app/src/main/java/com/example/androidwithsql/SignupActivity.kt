@@ -38,7 +38,7 @@ class SignupActivity : AppCompatActivity() {
                 //모든 정보를 Member 테이블에 삽입 후 로그인창으로 이동
                 val member = MemberData(
                     binding.signupIDText.text.toString(), binding.signtupPWText.text.toString(),
-                    binding.signupNameText.text.toString(), binding.signupPhoneNoText.text.toString()
+                    binding.signupNameText.text.toString(), binding.signupPhoneNoText.text.toString(),0
                 )
                 helper.insertMemberData(member)
                 Toast.makeText(this, "회원등록하셨습니다.", Toast.LENGTH_SHORT).show()

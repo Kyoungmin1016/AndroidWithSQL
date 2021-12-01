@@ -45,7 +45,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.empModeButton.setOnClickListener {
-            helper.insertMemberData(MemberData("Employee","Employee","직원",null))
+            helper.insertMemberData(MemberData("Employee","Employee","직원",null,60))
             helper.checkMemberData("Employee","Employee")
             startActivity(homeIntent)
         }
