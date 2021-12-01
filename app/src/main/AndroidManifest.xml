@@ -11,28 +11,37 @@
         android:theme="@style/Theme.AndroidWithSQL" >
         <activity
             android:name=".OrderRecyclerViewAdapter"
-            android:exported="true" />
+            android:exported="true"
+            android:label="주문 현황"/>
+
         <activity
             android:name=".GoodsFragment"
-            android:exported="true" />
+            android:exported="true"
+            android:label="상품 목록"/>
         <activity
             android:name=".SeatActivity"
-            android:exported="true"/>
+            android:exported="true"
+            android:label="좌석표"/>
         <activity
             android:name=".GoodsActivity"
-            android:exported="true" />
+            android:exported="true"
+            android:label="상품 주문"/>
         <activity
             android:name=".HomeActivity"
-            android:exported="true" />
+            android:exported="true"
+            android:label="마이페이지"/>
         <activity
             android:name=".SignupActivity"
-            android:exported="true" />
+            android:exported="true"
+            android:label="회원가입"/>
         <activity
             android:name=".LoginActivity"
-            android:exported="true" />
+            android:exported="true"
+            android:label="로그인"/>
         <activity
             android:name=".MainActivity"
-            android:exported="true" >
+            android:exported="true"
+            android:label="PC방 관리">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -42,7 +51,8 @@
 
         <activity
             android:name=".TimeActivity"
-            android:exported="true" />
+            android:exported="true"
+            android:label="시간 충전"/>
 
 
     </application>

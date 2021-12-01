@@ -27,7 +27,7 @@ class SeatActivity : AppCompatActivity() {
 
 
         adapter = SeatAdapter()
-        adapter.seatList = generateDummyList(3)
+        adapter.seatList = generateDummyList(10)
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
         binding.recyclerView.setHasFixedSize(true)
@@ -35,12 +35,12 @@ class SeatActivity : AppCompatActivity() {
 
     }
 
-    private fun generateDummyList(size: Int): MutableList<Seat> {
-        val list = mutableListOf<Seat>()
+    private fun generateDummyList(size: Int): MutableList<SeatData> {
+        val list = mutableListOf<SeatData>()
 
         for (i in 1..size){
             val drawable = R.drawable.ic_computer
-            val item = Seat(drawable, i, "사용여부")
+            val item = SeatData(drawable, i, "사용 여부")
 
             list.add(item)
         }

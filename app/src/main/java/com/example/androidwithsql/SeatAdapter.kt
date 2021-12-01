@@ -16,7 +16,7 @@ import kotlinx.android.synthetic.main.item.view.*
 
 class SeatAdapter : RecyclerView.Adapter<SeatAdapter.SeatViewHolder>() {
 
-    var seatList = mutableListOf<Seat>()
+    var seatList = mutableListOf<SeatData>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SeatViewHolder {
         val binding = ItemBinding.inflate(LayoutInflater.from(parent.context),parent,false)
@@ -45,7 +45,7 @@ class SeatAdapter : RecyclerView.Adapter<SeatAdapter.SeatViewHolder>() {
 //        val textView2: TextView = itemView.usedSeatText
 
 
-        fun bind(seatData : Seat){
+        fun bind(seatData : SeatData){
             binding.imageView.setImageResource(seatData.imageResource)
             binding.seatNoTextView.text = seatData.seatNo.toString()
             binding.usedSeatText.text = seatData.M_id.toString()
