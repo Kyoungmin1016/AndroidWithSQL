@@ -71,7 +71,6 @@ class SqliteHelper(context: Context,name: String,version:Int) : SQLiteOpenHelper
     }
 
     //멤버데이터 확인함수
-    @SuppressLint("Range")
     fun checkMemberData(M_id: String, M_password: String) :  Boolean{
 
         //아이디와 비밀번호가 맞는 투플 검색
@@ -124,8 +123,7 @@ class SqliteHelper(context: Context,name: String,version:Int) : SQLiteOpenHelper
 
         wd.close()
     }
-    
-    @SuppressLint("Range")
+
     fun presentGoodsData() : MutableList<GoodsData>{
 
         //상품 검색
@@ -171,7 +169,6 @@ class SqliteHelper(context: Context,name: String,version:Int) : SQLiteOpenHelper
     }
 
     //주문 검색
-    @SuppressLint("Range")
     fun presentCustemerOrder(M_id: String) : MutableList<OrderData>{
         val list = mutableListOf<OrderData>()
         var select : String? = null
@@ -204,7 +201,6 @@ class SqliteHelper(context: Context,name: String,version:Int) : SQLiteOpenHelper
         return list
     }
 
-    @SuppressLint("Range")
     fun presentSummedPrice(M_id: String) : Int{
         val select = "select sum(G_price) as summedPrice from OrderItem where M_id = '${M_id}'"
         val rd = readableDatabase
