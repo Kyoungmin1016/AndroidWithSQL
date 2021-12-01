@@ -26,15 +26,6 @@ class SeatAdapter : RecyclerView.Adapter<SeatAdapter.SeatViewHolder>() {
 
     override fun onBindViewHolder(holder: SeatViewHolder, position: Int) {
         holder.bind(seatList[position])
-//
-//        holder.itemView.setOnClickListener {
-//            Toast.makeText(SeatActivity::class.java,"클릭 성공",Toast.LENGTH_SHORT).show()L
-//        }
-//        val currentItem = SeatList[position]
-//
-//        holder.imageView.setImageResource(currentItem.imageResource)
-//        holder.textView1.text = currentItem.seatNo.toString()
-//        holder.textView2.text = currentItem.M_id
     }
 
     override fun getItemCount() = seatList.size
@@ -52,7 +43,7 @@ class SeatAdapter : RecyclerView.Adapter<SeatAdapter.SeatViewHolder>() {
 
             binding.selectSeatButton.setOnClickListener {
                 U_seat = seatData.seatNo
-                Toast.makeText(binding.root.context,"${seatData.seatNo}번 좌석을 선택하셨습니다.",Toast.LENGTH_SHORT).show()
+//                Toast.makeText(binding.root.context,"${seatData.seatNo}번 좌석을 선택하셨습니다.",Toast.LENGTH_SHORT).show()
                 ContextCompat.startActivity(binding.root.context,Intent(binding.root.context,TimeActivity::class.java),null)
             }
         }
