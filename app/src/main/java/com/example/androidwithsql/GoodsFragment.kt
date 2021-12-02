@@ -31,7 +31,7 @@ class GoodsFragment : AppCompatActivity() {
 
         binding.initFoodButton.setOnClickListener {
             initGoodsData()
-            binding.initFoodButton.visibility = View.GONE
+            binding.initFoodButton.visibility = View.INVISIBLE
             presentGoodsRecyclerView()
         }
 

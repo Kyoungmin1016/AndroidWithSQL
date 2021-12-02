@@ -90,7 +90,6 @@ class SqliteHelper(context: Context,name: String,version:Int) : SQLiteOpenHelper
         if(cursor.moveToFirst()){
             U_id = cursor.getString(cursor.getColumnIndex("M_id"))
             U_name = cursor.getString(cursor.getColumnIndex("name"))
-            U_time = cursor.getInt(cursor.getColumnIndex("time"))
         }
 
         //db 닫기
@@ -266,7 +265,7 @@ class SqliteHelper(context: Context,name: String,version:Int) : SQLiteOpenHelper
         val wd = writableDatabase
         val values = ContentValues()
 
-        values.put("M_id", U_name)
+        values.put("M_id", U_id)
         wd.update("Seat",values,"seatNo = ${seatData.seatNo}",null)
         wd.close()
     }
@@ -307,8 +306,43 @@ class SqliteHelper(context: Context,name: String,version:Int) : SQLiteOpenHelper
         val wd = writableDatabase
         val values = ContentValues()
 
-        values.put("time", timedata.time + U_time)
+        values.put("time", timedata.time + getMemberData(U_id.toString()).time)
 
+        wd.update("Member",values,"M_id = '${U_id}'",null)
+        wd.close()
+    }
+
+    fun getMemberData(M_id: String) : MemberData{
+        val rd = readableDatabase
+        val select = "select * from Member where M_id = '${M_id}'"
+        val cursor = rd.rawQuery(select,null)
+        var memberData : MemberData? = null
+
+        Log.d("Log_member","cursor : ${cursor}, size : ${cursor.count}")
+
+        if(cursor.moveToFirst()){
+            val M_id = cursor.getString(cursor.getColumnIndex("M_id"))
+            val M_password = cursor.getString(cursor.getColumnIndex("M_password"))
+            val name = cursor.getString(cursor.getColumnIndex("name"))
+            val phoneNo = cursor.getString(cursor.getColumnIndex("phoneNo"))
+            val time = cursor.getInt(cursor.getColumnIndex("time"))
+
+            memberData = MemberData(M_id,M_password,name,phoneNo,time)
+        }
+
+        cursor.close()
+        rd.close()
+        return memberData!!
+    }
+
+    fun deleteSeatData(){
+        val wd = writableDatabase
+        val values = ContentValues()
+        values.put("M_id","사용 가능")
+        wd.update("Seat",values,"M_id = '${U_id}'",null)
+
+        values.clear()
+        values.put("time", U_time)
         wd.update("Member",values,"M_id = '${U_id}'",null)
         wd.close()
     }

@@ -24,6 +24,7 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var GoodsFragmentIntent : Intent
     private lateinit var helper: SqliteHelper
     private lateinit var adapter: OrderRecyclerViewAdapter   //클래스 FoodRecyclerViewAdapter 호출
+    private lateinit var loginIntent: Intent
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,10 +34,11 @@ class HomeActivity : AppCompatActivity() {
         helper = SqliteHelper(this, DB_MEMBER, DB_VERSION)
         GoodsFragmentIntent = Intent(this,GoodsFragment::class.java)
         adapter = OrderRecyclerViewAdapter() //어댑터 객체 생성
-
+        loginIntent = Intent(this,LoginActivity::class.java)
 
         //초기설정
         binding.nameText.text = U_name
+        U_time = helper.getMemberData(U_id.toString()).time
 
         with(binding){
             //직원일때
@@ -50,7 +52,7 @@ class HomeActivity : AppCompatActivity() {
                 summedPriceView.visibility = View.VISIBLE
                 orderCompleteButton.visibility = View.INVISIBLE
             }
-            timeText.text = getTimeStringFromInt(helper)
+            timeText.text = getTimeStringFromInt(helper.getMemberData(U_id.toString()).time)
             summedPriceView.text = "총 가격 : ${helper.presentSummedPrice(U_id.toString())}"
 
             //상품버튼클릭시 화면이동
@@ -65,6 +67,13 @@ class HomeActivity : AppCompatActivity() {
                     helper.completeOrder(adapter.tempOrderItemData.get(index = i))
                 }
                 presentOrderRecyclerView()
+            }
+
+            //사용종료버튼 클릭 시 해당 시트 data삭제 및 login창으로 이동
+            logoutButton.setOnClickListener {
+                helper.deleteSeatData()
+                Toast.makeText(this@HomeActivity,"사용종료하였습니다.",Toast.LENGTH_SHORT).show()
+                startActivity(loginIntent)
             }
         }
         presentOrderRecyclerView()
