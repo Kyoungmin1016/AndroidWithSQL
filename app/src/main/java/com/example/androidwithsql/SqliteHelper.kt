@@ -21,6 +21,7 @@ class SqliteHelper(context: Context,name: String,version:Int) : SQLiteOpenHelper
         var U_id : String? = null
         var U_name : String? = null
         var U_time : Int = 0
+        var U_seat : Int = 0
 
         //테이블생성
         val CREATE_MEMBER =
@@ -160,7 +161,7 @@ class SqliteHelper(context: Context,name: String,version:Int) : SQLiteOpenHelper
         values.put("M_id", orderData.M_id)
         values.put("goodsName",orderData.goodsName)
         values.put("G_price",orderData.G_price)
-        values.put("seatNo",1)
+        values.put("seatNo",orderData.seatNo)
         Log.d(LOG_ORDER,"values : ${values}")
 
         wd.insert("OrderItem",null,values)
@@ -268,6 +269,7 @@ class SqliteHelper(context: Context,name: String,version:Int) : SQLiteOpenHelper
 
         values.put("M_id", U_id)
         wd.update("Seat",values,"seatNo = ${seatData.seatNo}",null)
+        U_seat = seatData.seatNo
         wd.close()
     }
 

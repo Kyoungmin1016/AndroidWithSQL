@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.androidwithsql.MainActivity.Companion.LOG_EMPLOYEE
 import com.example.androidwithsql.SqliteHelper.Companion.U_id
+import com.example.androidwithsql.SqliteHelper.Companion.U_seat
 import com.example.androidwithsql.databinding.ItemOrderBinding
 
 class OrderRecyclerViewAdapter : RecyclerView.Adapter<OrderRecyclerViewAdapter.ViewHolder>() {
@@ -46,7 +47,8 @@ class OrderRecyclerViewAdapter : RecyclerView.Adapter<OrderRecyclerViewAdapter.V
                     }
                     else {
                         checkBoxStatus.put(adapterPosition, true)
-                        tempOrderItemData.add(OrderData(orderDataList[position].orderNo,orderDataList[position].goodsName,orderDataList[position].M_id,null,null))
+                        tempOrderItemData.add(OrderData(orderDataList[position].orderNo,orderDataList[position].goodsName,orderDataList[position].M_id,null,
+                            null))
                     }
                     Log.d(LOG_EMPLOYEE,"adapterPosition : ${adapterPosition} isChecked : ${orderCheckBox.isChecked}")
                     Log.d(LOG_EMPLOYEE,"tempOrderItemData : ${tempOrderItemData}")

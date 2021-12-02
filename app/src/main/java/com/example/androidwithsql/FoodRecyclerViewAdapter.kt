@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.androidwithsql.MainActivity.Companion.LOG_FOOD
 import com.example.androidwithsql.MainActivity.Companion.LOG_ORDER
 import com.example.androidwithsql.SqliteHelper.Companion.U_id
+import com.example.androidwithsql.SqliteHelper.Companion.U_seat
 import com.example.androidwithsql.databinding.ItemGoodsBinding
 
 class FoodRecyclerViewAdapter : RecyclerView.Adapter<FoodRecyclerViewAdapter.ViewHolder>(){
@@ -28,11 +29,12 @@ class FoodRecyclerViewAdapter : RecyclerView.Adapter<FoodRecyclerViewAdapter.Vie
                 goodsCheckBox.setOnClickListener {
                     if(!goodsCheckBox.isChecked) {
                         checkBoxStatus.put(adapterPosition, false)
-                        tempGoodsItemData.remove(OrderData(null,U_id.toString(),goodsDataList[position].goodsName,goodsDataList[position].G_price,null))
+                        tempGoodsItemData.remove(OrderData(null,U_id.toString(),goodsDataList[position].goodsName,goodsDataList[position].G_price,U_seat))
                     }
                     else {
                         checkBoxStatus.put(adapterPosition, true)
-                        tempGoodsItemData.add(OrderData(null,U_id.toString(),goodsDataList[position].goodsName,goodsDataList[position].G_price,null))
+                        tempGoodsItemData.add(OrderData(null,U_id.toString(),goodsDataList[position].goodsName,goodsDataList[position].G_price,
+                            U_seat))
                     }
                     Log.d(LOG_FOOD,"adapterPosition : ${adapterPosition} isChecked : ${goodsCheckBox.isChecked}")
                     Log.d(LOG_FOOD,"tempGoodsItemData : ${tempGoodsItemData}")
