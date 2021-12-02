@@ -40,6 +40,7 @@ class HomeActivity : AppCompatActivity() {
         binding.nameText.text = U_name
         U_time = helper.getMemberData(U_id.toString()).time
 
+
         with(binding){
             //직원일때
             if(adapter.isEmployee(U_id.toString())) {

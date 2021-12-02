@@ -56,5 +56,5 @@ class TimeRecyclerViewAdapter : RecyclerView.Adapter<TimeRecyclerViewAdapter.Vie
     }
 
     //문자 합치기
-    private fun makeTimeString(hours: Int, minutes: Int): String = String.format("%02d:%02d", hours, minutes)
+    private fun makeTimeString(hours: Int, minutes: Int): String = String.format("%03d:%02d", hours, minutes)
 }

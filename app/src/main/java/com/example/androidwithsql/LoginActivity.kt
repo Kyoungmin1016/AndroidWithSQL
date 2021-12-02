@@ -16,6 +16,7 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var helper: SqliteHelper   //클래스 SqliteHelper 호출
     private lateinit var HomeIntent : Intent  //home 액티비티와 연결
     private lateinit var SeatIntent : Intent //seat 액티비티와 연결
+    private lateinit var MainIntent : Intent
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,16 +29,15 @@ class LoginActivity : AppCompatActivity() {
         helper = SqliteHelper(this,DB_MEMBER,DB_VERSION)
         HomeIntent = Intent(this, HomeActivity::class.java)
         SeatIntent = Intent(this,SeatActivity::class.java)
-
+        MainIntent = Intent(this,MainActivity::class.java)
         //클릭시 회원가입화면으로 이동
         binding.signupButton.setOnClickListener {
             startActivity(signupIntent)
         }
 
-        //클릭 시 Member테이블의 데이터 초기화
-        binding.resetButton.setOnClickListener {
-            helper.reset()
-            Toast.makeText(this,"초기화되었습니다.",Toast.LENGTH_SHORT).show()
+        //클릭 시 Main화면으로 이동
+        binding.mainButton.setOnClickListener {
+            startActivity(MainIntent)
         }
 
         //클릭 시 로그인

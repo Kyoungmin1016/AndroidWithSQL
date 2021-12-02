@@ -90,6 +90,7 @@ class SqliteHelper(context: Context,name: String,version:Int) : SQLiteOpenHelper
         if(cursor.moveToFirst()){
             U_id = cursor.getString(cursor.getColumnIndex("M_id"))
             U_name = cursor.getString(cursor.getColumnIndex("name"))
+            U_time = cursor.getInt(cursor.getColumnIndex("time"))
         }
 
         //db 닫기
@@ -306,7 +307,7 @@ class SqliteHelper(context: Context,name: String,version:Int) : SQLiteOpenHelper
         val wd = writableDatabase
         val values = ContentValues()
 
-        values.put("time", timedata.time + getMemberData(U_id.toString()).time)
+        values.put("time", timedata.time + U_time)
 
         wd.update("Member",values,"M_id = '${U_id}'",null)
         wd.close()
