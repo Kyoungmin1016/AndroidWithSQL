@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.androidwithsql">
 
     <application
@@ -9,6 +10,31 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AndroidWithSQL">
+        <activity
+            android:name=".TimeActivity"
+            android:exported="true" />
+        <activity
+            android:name=".OrderRecyclerViewAdapter"
+            android:exported="true"
+            tools:ignore="Instantiatable" />
+        <activity
+            android:name=".GoodsFragment"
+            android:exported="true" />
+        <activity
+            android:name=".SeatActivity"
+            android:exported="true" />
+        <activity
+            android:name=".GoodsActivity"
+            android:exported="true" />
+        <activity
+            android:name=".HomeActivity"
+            android:exported="true" />
+        <activity
+            android:name=".SignupActivity"
+            android:exported="true" />
+        <activity
+            android:name=".LoginActivity"
+            android:exported="true" />
         <activity
             android:name=".MainActivity"
             android:exported="true">
