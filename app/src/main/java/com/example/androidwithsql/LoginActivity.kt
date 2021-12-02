@@ -15,6 +15,7 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var signupIntent : Intent  //회원가입액티비티와 연결
     private lateinit var helper: SqliteHelper   //클래스 SqliteHelper 호출
     private lateinit var HomeIntent : Intent  //home 액티비티와 연결
+    private lateinit var SeatIntent : Intent //seat 액티비티와 연결
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,6 +27,7 @@ class LoginActivity : AppCompatActivity() {
         signupIntent = Intent(this,SignupActivity::class.java)
         helper = SqliteHelper(this,DB_MEMBER,DB_VERSION)
         HomeIntent = Intent(this, HomeActivity::class.java)
+        SeatIntent = Intent(this,SeatActivity::class.java)
 
         //클릭시 회원가입화면으로 이동
         binding.signupButton.setOnClickListener {
@@ -45,7 +47,7 @@ class LoginActivity : AppCompatActivity() {
                 //아이디 및 비밀번호가 맞는 투플이 있으면 아이디및 기타정보 임시저장 후 Home화면으로 이동
                 if(helper.checkMemberData(binding.longinId.text.toString(),binding.loginPw.text.toString())){
                     //helper.insertOrderItem(OrderData(U_id.toString(),"주문 시 해당리스트에 출력됩니다.",0,null))
-                    startActivity(HomeIntent)
+                    startActivity(SeatIntent)
                 }
                 else{
                     Toast.makeText(this,"로그인 실패",Toast.LENGTH_SHORT).show()

@@ -11,6 +11,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AndroidWithSQL">
         <activity
+            android:name=".TimeActivity"
+            android:exported="true" />
+        <activity
             android:name=".OrderRecyclerViewAdapter"
             android:exported="true"
             tools:ignore="Instantiatable" />

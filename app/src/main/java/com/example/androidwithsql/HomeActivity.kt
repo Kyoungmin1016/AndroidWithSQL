@@ -50,7 +50,7 @@ class HomeActivity : AppCompatActivity() {
                 summedPriceView.visibility = View.VISIBLE
                 orderCompleteButton.visibility = View.INVISIBLE
             }
-            timeText.text = getTimeStringFromInt(U_time)
+            timeText.text = getTimeStringFromInt(helper)
             summedPriceView.text = "총 가격 : ${helper.presentSummedPrice(U_id.toString())}"
 
             //상품버튼클릭시 화면이동

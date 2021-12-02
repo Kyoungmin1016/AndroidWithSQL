@@ -10,6 +10,8 @@ import com.example.androidwithsql.MainActivity.Companion.LOG_FOOD
 import com.example.androidwithsql.MainActivity.Companion.LOG_LOGIN
 import com.example.androidwithsql.MainActivity.Companion.LOG_ORDER
 import com.example.androidwithsql.MainActivity.Companion.LOG_PRICE
+import com.example.androidwithsql.MainActivity.Companion.LOG_SEAT
+import com.example.androidwithsql.MainActivity.Companion.LOG_TIMER
 
 
 class SqliteHelper(context: Context,name: String,version:Int) : SQLiteOpenHelper(context, name, null,version) {
@@ -27,6 +29,10 @@ class SqliteHelper(context: Context,name: String,version:Int) : SQLiteOpenHelper
             "create table Goods(goodsName varchar(20) primary key,G_price integer,stock integer,foodImage blob)"
         val CREATE_ORDERITEM =
             "create table OrderItem(orderNo Integer primary key autoincrement,M_id varchar(20),goodsName varchar(20),G_price integer,seatNo integer)"
+        val CREATE_SEAT =
+            "create table Seat(seatNo Integer primary key autoincrement,M_id varchar(20))"
+        val CREATE_TIME =
+            "create table Time(time integer primary key,T_price integer)"
     }
 
     override fun onCreate(db: SQLiteDatabase?) {
@@ -34,6 +40,8 @@ class SqliteHelper(context: Context,name: String,version:Int) : SQLiteOpenHelper
         db?.execSQL(CREATE_MEMBER)
         db?.execSQL(CREATE_GOODS)
         db?.execSQL(CREATE_ORDERITEM)
+        db?.execSQL(CREATE_SEAT)
+        db?.execSQL(CREATE_TIME)
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
@@ -52,7 +60,7 @@ class SqliteHelper(context: Context,name: String,version:Int) : SQLiteOpenHelper
         values.put("M_password",member.M_password)
         values.put("name",member.name)
         values.put("phoneNo",member.phoneNo)
-        values.put("time",60)
+        values.put("time",member.time)
         Log.d(LOG_LOGIN,"values ${values}")
 
         //db에 넣기
@@ -206,6 +214,9 @@ class SqliteHelper(context: Context,name: String,version:Int) : SQLiteOpenHelper
             summedPrice = cursor.getInt(cursor.getColumnIndex("summedPrice"))
         }
 
+        cursor.close()
+        rd.close()
+
         return summedPrice
     }
 
@@ -218,6 +229,87 @@ class SqliteHelper(context: Context,name: String,version:Int) : SQLiteOpenHelper
 
         Log.d(LOG_ORDER,"order : ${orderData.goodsName}")
         wd.delete("OrderItem","orderNo = ${orderData.orderNo}",null)
+        wd.close()
+    }
+
+    fun insertSeat(){
+        val wd = writableDatabase
+        val values = ContentValues()
+
+        values.put("M_id","사용 가능")
+
+        wd.insert("Seat",null,values)
+        wd.close()
+    }
+
+    fun presentSeatData() : MutableList<SeatData>{
+        val list = mutableListOf<SeatData>()
+        val select = "select * from Seat"
+        val rd = readableDatabase
+        val cursor = rd.rawQuery(select,null)
+
+        while(cursor.moveToNext()){
+            val seatNo = cursor.getInt(cursor.getColumnIndex("seatNo"))
+            val M_id = cursor.getString(cursor.getColumnIndex("M_id"))
+
+            list.add(SeatData(R.drawable.ic_computer,seatNo,M_id))
+            Log.d(LOG_SEAT,"list : ${list}")
+        }
+
+        cursor.close()
+        rd.close()
+
+        return list
+    }
+
+    fun updateSeatData(seatData : SeatData){
+        val wd = writableDatabase
+        val values = ContentValues()
+
+        values.put("M_id", U_name)
+        wd.update("Seat",values,"seatNo = ${seatData.seatNo}",null)
+        wd.close()
+    }
+
+    fun insertTimeData(timeData: TimeData){
+        val wd = writableDatabase
+        val values = ContentValues()
+
+        values.put("time",timeData.time)
+        values.put("T_price",timeData.T_price)
+        Log.d(LOG_TIMER,"values : ${values}")
+
+        wd.insert("Time",null,values)
+        wd.close()
+    }
+
+    fun presentTimeData() : MutableList<TimeData>{
+        val list = mutableListOf<TimeData>()
+        val select = "select * from Time"
+        val rd = readableDatabase
+        val cursor = rd.rawQuery(select,null)
+
+        while(cursor.moveToNext()){
+            val time = cursor.getInt(cursor.getColumnIndex("time"))
+            val T_price = cursor.getInt(cursor.getColumnIndex("T_price"))
+
+            list.add(TimeData(time,T_price))
+            Log.d(LOG_TIMER,"list : ${list}")
+        }
+
+        cursor.close()
+        rd.close()
+
+        return list
+    }
+
+    fun updateTimeData(timedata : TimeData){
+        val wd = writableDatabase
+        val values = ContentValues()
+
+        values.put("time", timedata.time + U_time)
+
+        wd.update("Member",values,"M_id = '${U_id}'",null)
         wd.close()
     }
 

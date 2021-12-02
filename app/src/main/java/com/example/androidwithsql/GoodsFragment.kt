@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.androidwithsql.MainActivity.Companion.DB_MEMBER
@@ -28,7 +29,11 @@ class GoodsFragment : AppCompatActivity() {
         helper = SqliteHelper(this, DB_MEMBER, DB_VERSION)
         homeIntent = Intent(this,HomeActivity::class.java)
 
-        initGoodsData()
+        binding.initFoodButton.setOnClickListener {
+            initGoodsData()
+            binding.initFoodButton.visibility = View.GONE
+            presentGoodsRecyclerView()
+        }
 
         binding.OrderButton.setOnClickListener {
             for(i in 0 until adapter.tempGoodsItemData.size){

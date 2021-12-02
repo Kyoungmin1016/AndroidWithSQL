@@ -1,36 +1,54 @@
 package com.example.androidwithsql
 
-import android.content.ClipData
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.item.view.*
+import com.example.androidwithsql.databinding.ItemSeatBinding
 
-class SeatAdapter(private val SeatList: List<Seat>) : RecyclerView.Adapter<SeatAdapter.SeatViewHolder>() {
+class SeatAdapter : RecyclerView.Adapter<SeatAdapter.SeatViewHolder>() {
+
+    var seatList = mutableListOf<SeatData>()
+    private lateinit var helper: SqliteHelper
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SeatViewHolder {
-        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item,
-        parent, false)
-
-        return SeatViewHolder(itemView)
+        val binding = ItemSeatBinding.inflate(LayoutInflater.from(parent.context),parent,false)
+        helper = SqliteHelper(binding.root.context, MainActivity.DB_MEMBER, MainActivity.DB_VERSION)
+        return SeatViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: SeatViewHolder, position: Int) {
-        val currentItem = SeatList[position]
-
-        holder.imageView.setImageResource(currentItem.imageResource)
-        holder.textView1.text = currentItem.text1
-        holder.textView2.text = currentItem.text2
+        holder.bind(seatList[position])
     }
 
-    override fun getItemCount() = SeatList.size
+    override fun getItemCount() = seatList.size
 
-    inner class SeatViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
-        val imageView: ImageView = itemView.image_view
-        val textView1: TextView = itemView.text_view_1
-        val textView2: TextView = itemView.text_view_2
+    inner class SeatViewHolder(private val binding : ItemSeatBinding) : RecyclerView.ViewHolder(binding.root){
+        fun bind(seatData : SeatData){
+            binding.imageView.setImageResource(seatData.imageResource)
+            binding.seatNoTextView.text = seatData.seatNo.toString()
+            binding.usedSeatText.text = seatData.M_id
+
+            binding.selectSeatButton.setOnClickListener {
+                if(seatData.M_id.toString() != "사용 가능"){
+                    Toast.makeText(binding.root.context,"${seatData.seatNo}번은 사용중입니다.",Toast.LENGTH_SHORT).show()
+                }
+                else {
+                    Toast.makeText(binding.root.context, "${seatData.seatNo}번 좌석을 선택하셨습니다.", Toast.LENGTH_SHORT).show()
+                    helper.updateSeatData(seatData)
+                    ContextCompat.startActivity(
+                        binding.root.context,
+                        Intent(binding.root.context, TimeActivity::class.java),
+                        null
+                    )
+                }
+            }
+        }
+
     }
 }

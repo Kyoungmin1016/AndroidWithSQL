@@ -26,6 +26,7 @@ class MainActivity : AppCompatActivity() {
         val LOG_ORDER = "Log_order"
         val LOG_PRICE = "Log_price"
         val LOG_EMPLOYEE = "Log_employee"
+        val LOG_SEAT = "Log_seat"
     }
 
 
@@ -45,7 +46,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.empModeButton.setOnClickListener {
-            helper.insertMemberData(MemberData("Employee","Employee","직원",null))
+            helper.insertMemberData(MemberData("Employee","Employee","직원",null,180))
             helper.checkMemberData("Employee","Employee")
             startActivity(homeIntent)
         }
